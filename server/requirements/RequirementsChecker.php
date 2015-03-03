@@ -517,7 +517,7 @@ class RequirementsChecker
 	function checkDatabaseCreds()
 	{
 		// Check if we're running as a standalone script.
-		$dbCreds = require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php');
+		$dbCreds = @require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php');
 
 		if (is_array($dbCreds))
 		{
