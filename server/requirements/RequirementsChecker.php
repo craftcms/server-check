@@ -517,19 +517,31 @@ class RequirementsChecker
 	function checkDatabaseCreds()
 	{
 		// Check if we're running as a standalone script.
-		$dbCreds = @require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php');
+		$dbConfigPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
 
-		if (is_array($dbCreds))
+		if (is_file($dbConfigPath))
 		{
-			if ($dbCreds['server'] && $dbCreds['user'] && $dbCreds['password'] && $dbCreds['database'])
+			$dbCreds = @require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'db.php');
+
+			if (is_array($dbCreds))
 			{
-				$this->dbCreds = $dbCreds;
-				return true;
+				if ($dbCreds['server'] && $dbCreds['user'] && $dbCreds['password'] && $dbCreds['database'])
+				{
+					$this->dbCreds = $dbCreds;
+					return true;
+				}
 			}
 		}
+		else
+		{
+			// Check if we're running in the context of Craft.
+			$this->dbCreds['server'] = Craft::$app->config->get('server', 'db');
+			$this->dbCreds['user'] = Craft::$app->config->get('user', 'db');
+			$this->dbCreds['password'] = Craft::$app->config->get('password', 'db');
+			$this->dbCreds['database'] = Craft::$app->config->get('database', 'db');
 
-		// Check if we're running in the context of Craft.
-		//$dbCreds = require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'db.php');
+			return true;
+		}
 
 		return false;
 	}
