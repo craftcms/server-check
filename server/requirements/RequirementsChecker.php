@@ -36,20 +36,6 @@ if (version_compare(PHP_VERSION, '4.3', '<'))
  *
  * If you wish to render the report with your own representation, use [[getResult()]] instead of [[render()]]
  *
- * Requirement condition could be in format "eval:PHP expression".
- *
- * In this case specified PHP expression will be evaluated in the context of this class instance.
- * For example:
- *
- * ~~~
- * $requirements = array(
- *     array(
- *         'name' => 'Upload max file size',
- *         'condition' => 'eval:$this->checkUploadMaxFileSize("5M")',
- *     ),
- * );
- * ~~~
- *
  * Note: this class definition does not match ordinary Craft style, because it should match PHP 4.3
  * and should not use features from newer PHP versions!
  *
@@ -273,22 +259,6 @@ class RequirementsChecker
 	}
 
 	/**
-	 * Compare byte sizes of values given in the verbose representation, like '5M', '15K' etc.
-	 *
-	 * @param string $a       The first value.
-	 * @param string $b       The second value.
-	 * @param string $compare The ccomparison operator, by default '>='.
-	 *
-	 * @return bool The comparison result.
-	 */
-	function compareByteSize($a, $b, $compare = '>=')
-	{
-		$compareExpression = '(' . $this->getByteSize($a) . $compare . $this->getByteSize($b) . ')';
-
-		return $this->evaluateExpression($compareExpression);
-	}
-
-	/**
 	 * Gets the size in bytes from verbose size representation. For example: '5K' => 5 * 1024
 	 *
 	 * @param string $verboseSize The verbose size representation.
@@ -341,40 +311,6 @@ class RequirementsChecker
 				return 0;
 			}
 		}
-	}
-
-	/**
-	 * Checks if upload max file size matches the given range.
-	 *
-	 * @param string|null $min The verbose file size minimum required value, pass null to skip minimum check.
-	 * @param string|null $max The verbose file size maximum required value, pass null to skip maximum check.
-	 *
-	 * @return bool success.
-	 */
-	function checkUploadMaxFileSize($min = null, $max = null)
-	{
-		$postMaxSize = ini_get('post_max_size');
-		$uploadMaxFileSize = ini_get('upload_max_filesize');
-
-		if ($min !== null)
-		{
-			$minCheckResult = $this->compareByteSize($postMaxSize, $min, '>=') && $this->compareByteSize($uploadMaxFileSize, $min, '>=');
-		}
-		else
-		{
-			$minCheckResult = true;
-		}
-
-		if ($max !== null)
-		{
-			$maxCheckResult = $this->compareByteSize($postMaxSize, $max, '<=') && $this->compareByteSize($uploadMaxFileSize, $max, '<=');
-		}
-		else
-		{
-			$maxCheckResult = true;
-		}
-
-		return ($minCheckResult && $maxCheckResult);
 	}
 
 	/**
@@ -433,16 +369,6 @@ class RequirementsChecker
 		{
 			$this->usageError("Requirement '{$requirementKey}' has no condition!");
 		}
-		else
-		{
-			$evalPrefix = 'eval:';
-
-			if (is_string($requirement['condition']) && strpos($requirement['condition'], $evalPrefix) === 0)
-			{
-				$expression = substr($requirement['condition'], strlen($evalPrefix));
-				$requirement['condition'] = $this->evaluateExpression($expression);
-			}
-		}
 
 		if (!array_key_exists('name', $requirement))
 		{
@@ -478,18 +404,6 @@ class RequirementsChecker
 	{
 		echo "Error: $message\n\n";
 		exit(1);
-	}
-
-	/**
-	 * Evaluates a PHP expression under the context of this class.
-	 *
-	 * @param string $expression A PHP expression to be evaluated.
-	 *
-	 * @return mixed The expression result.
-	 */
-	function evaluateExpression($expression)
-	{
-		return eval('return ' . $expression . ';');
 	}
 
 	/**
@@ -679,8 +593,6 @@ class RequirementsChecker
 
 	function checkMemory()
 	{
-		$maxUploadFileSize = ini_get('upload_max_filesize');
-
 		$memoryLimit = ini_get('memory_limit');
 		$memoryLimitInBytes = $this->getByteSize($memoryLimit);
 		$this->memoryMessage = '';
