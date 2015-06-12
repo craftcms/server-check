@@ -1,7 +1,7 @@
 <?php
 /**
  * @link http://buildwithcraft.com/
- * @copyright Copyright (c) 2013 Pixel & Tonic, Inc.
+ * @copyright Copyright (c) 2015 Pixel & Tonic, Inc.
  * @license http://buildwithcraft.com/license
  */
 
@@ -50,14 +50,14 @@ class RequirementsChecker
 	var $iniSetMessage;
 	var $memoryMessage;
 
-	var $requiredMySqlVersion = '5.1.0';
+	var $requiredMySqlVersion = '5.5.0';
 
 	/**
 	 * Check the given requirements, collecting results into internal field.
 	 * This method can be invoked several times checking different requirement sets.
 	 * Use [[getResult()]] or [[render()]] to get the results.
 	 *
-	 * @param array|string $requirements The rquirements to be checked. If an array, it is treated as the set of
+	 * @param array|string $requirements The requirements to be checked. If an array, it is treated as the set of
 	 *                                   requirements. If a string, it is treated as the path of the file, which
 	 *                                   contains the requirements;
 	 *
@@ -179,14 +179,14 @@ class RequirementsChecker
 
 		if (!empty($_SERVER['argv']))
 		{
-			$viewFileName = $baseViewFilePath.DIRECTORY_SEPARATOR.'console'.DIRECTORY_SEPARATOR.'index.php';
+			$viewFilename = $baseViewFilePath.DIRECTORY_SEPARATOR.'console'.DIRECTORY_SEPARATOR.'index.php';
 		}
 		else
 		{
-			$viewFileName = $baseViewFilePath.DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'index.php';
+			$viewFilename = $baseViewFilePath.DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'index.php';
 		}
 
-		$this->renderViewFile($viewFileName, $this->result);
+		$this->renderViewFile($viewFilename, $this->result);
 	}
 
 	/**
@@ -449,10 +449,10 @@ class RequirementsChecker
 		else
 		{
 			// Check if we're running in the context of Craft.
-			$this->dbCreds['server'] = Craft::$app->config->get('server', 'db');
-			$this->dbCreds['user'] = Craft::$app->config->get('user', 'db');
-			$this->dbCreds['password'] = Craft::$app->config->get('password', 'db');
-			$this->dbCreds['database'] = Craft::$app->config->get('database', 'db');
+			$this->dbCreds['server'] = Craft::$app->getConfig()->get('server', 'db');
+			$this->dbCreds['user'] = Craft::$app->getConfig()->get('user', 'db');
+			$this->dbCreds['password'] = Craft::$app->getConfig()->get('password', 'db');
+			$this->dbCreds['database'] = Craft::$app->getConfig()->get('database', 'db');
 
 			return true;
 		}
@@ -567,14 +567,16 @@ class RequirementsChecker
 		restore_error_handler();
 
 		// ini_set can return false or an empty string depending on your php version / FastCGI.
-		// If it has been disabled in php.ini, the value will be null because of our muted error handler
-		if (!$result)
+		//  If ini_set has been disabled in php.ini, the value will be null because of our muted error handler
+		if ($result === null)
 		{
 			$this->iniSetMessage = 'It looks like <a href="http://php.net/manual/en/function.ini-set.php">ini_set</a> has been disabled in your php.ini file. Craft requires that to operate.';
 			return false;
 		}
 
-		if ($result !== $oldValue)
+		// ini_set can return false or an empty string or the current value of memory_limit depending on your php
+		// version and FastCGI. Regard, calling it didn't work, but there was no error.
+		if ($result === false || $result === '' || $result === $oldValue)
 		{
 			$this->iniSetMessage = 'It appears calls to <a href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are not working for Craft. You may need to increase some settings in your php.ini file such as <a href="http://php.net/manual/en/ini.core.php#ini.memory-limit">memory_limit</a> and <a href="http://php.net/manual/en/info.configuration.php#ini.max-execution-time">max_execution_time</a> for long running operations like updating and asset transformations.';
 
@@ -584,7 +586,7 @@ class RequirementsChecker
 
 		// Resetting should work, but might as well be extra careful.
 		set_error_handler(array($this, 'muteErrorHandler'));
-		$result = ini_set('memory_limit', $oldValue);
+		ini_set('memory_limit', $oldValue);
 		restore_error_handler();
 
 		$this->iniSetMessage = 'Calls to <a href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are working correctly.';
