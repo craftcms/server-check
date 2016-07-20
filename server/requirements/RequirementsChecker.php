@@ -1,8 +1,8 @@
 <?php
 /**
- * @link https://craftcmscom/
+ * @link      http://craftcms.com/
  * @copyright Copyright (c) Pixel & Tonic, Inc.
- * @license https://craftcms.com/license
+ * @license   http://craftcms.com/license
  */
 
 if (version_compare(PHP_VERSION, '4.3', '<')) {
@@ -39,7 +39,7 @@ if (version_compare(PHP_VERSION, '4.3', '<')) {
  * and should not use features from newer PHP versions!
  *
  * @author Pixel & Tonic, Inc. <support@pixelandtonic.com>
- * @since 3.0
+ * @since  3.0
  */
 class RequirementsChecker
 {
@@ -48,6 +48,7 @@ class RequirementsChecker
     var $dbConnectionError;
     var $iniSetMessage;
     var $memoryMessage;
+    var $webRootFolderMessage;
 
     var $requiredMySqlVersion = '5.5.0';
 
@@ -73,14 +74,14 @@ class RequirementsChecker
         }
 
         if (!isset($this->result) || !is_array($this->result)) {
-            $this->result = array(
-                'summary' => array(
+            $this->result = [
+                'summary' => [
                     'total' => 0,
                     'errors' => 0,
                     'warnings' => 0,
-                ),
-                'requirements' => array(),
-            );
+                ],
+                'requirements' => [],
+            ];
         }
 
         foreach ($requirements as $key => $rawRequirement) {
@@ -119,6 +120,14 @@ class RequirementsChecker
     }
 
     /**
+     * @return boolean Returns if we're running in the context of Craft or as a standalone PHP script.
+     */
+    function isCraftRunning()
+    {
+        return class_exists('Craft');
+    }
+
+    /**
      * Return the check results.
      *
      * @return array|null check results in format:
@@ -145,9 +154,9 @@ class RequirementsChecker
     {
         if (isset($this->result)) {
             return $this->result;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -307,9 +316,11 @@ class RequirementsChecker
             require($_viewFile_);
 
             return ob_get_clean();
-        } else {
-            require($_viewFile_);
         }
+
+        require($_viewFile_);
+
+        return null;
     }
 
     /**
@@ -390,7 +401,7 @@ class RequirementsChecker
         $dbConfigPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
 
         if (is_file($dbConfigPath)) {
-            $dbCreds = @require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'db.php');
+            $dbCreds = @require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php');
 
             if (is_array($dbCreds)) {
                 if ($dbCreds['server'] && $dbCreds['user'] && $dbCreds['password'] && $dbCreds['database']) {
@@ -399,7 +410,7 @@ class RequirementsChecker
                     return true;
                 }
             }
-        } else {
+        } else if ($this->isCraftRunning()) {
             // Check if we're running in the context of Craft.
             $this->dbCreds['server'] = Craft::$app->getConfig()->get('server', 'db');
             $this->dbCreds['user'] = Craft::$app->getConfig()->get('user', 'db');
@@ -430,26 +441,35 @@ class RequirementsChecker
 
         if (function_exists('iconv')) {
             // Let's see what happens.
-            set_error_handler(array($this, 'muteErrorHandler'));
+            set_error_handler([$this, 'muteErrorHandler']);
             $r = iconv('utf-8', 'ascii//IGNORE', "\xCE\xB1".str_repeat('a', 9000));
             restore_error_handler();
 
             if ($r === false) {
                 $this->iconvMessage = $ignoreMessage;
+
                 return false;
-            } else if (($c = strlen($r)) < 9000) {
+            }
+
+            if (($c = strlen($r)) < 9000) {
                 $this->iconvMessage = $warningMessage;
+
                 return false;
-            } else if ($c > 9000) {
+            }
+
+            if ($c > 9000) {
                 $this->iconvMessage = $warningMessage;
+
                 return false;
             }
 
             $this->iconvMessage = $recommendedMessage;
+
             return true;
         }
 
         $this->iconvMessage = $recommendedMessage;
+
         return false;
     }
 
@@ -492,6 +512,7 @@ class RequirementsChecker
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 $this->dbConnectionError = "Can't connect to the database with the credentials supplied in db.php. Please double check them and try again.";
+
                 return false;
             }
         }
@@ -503,7 +524,7 @@ class RequirementsChecker
     {
         $oldValue = ini_get('memory_limit');
 
-        set_error_handler(array($this, 'muteErrorHandler'));
+        set_error_handler([$this, 'muteErrorHandler']);
         $result = ini_set('memory_limit', '442M');
         restore_error_handler();
 
@@ -511,6 +532,7 @@ class RequirementsChecker
         // If ini_set has been disabled in php.ini, the value will be null because of our muted error handler
         if ($result === null) {
             $this->iniSetMessage = 'It looks like <a href="http://php.net/manual/en/function.ini-set.php">ini_set</a> has been disabled in your php.ini file. Craft requires that to operate.';
+
             return false;
         }
 
@@ -524,11 +546,12 @@ class RequirementsChecker
         }
 
         // Resetting should work, but might as well be extra careful.
-        set_error_handler(array($this, 'muteErrorHandler'));
+        set_error_handler([$this, 'muteErrorHandler']);
         ini_set('memory_limit', $oldValue);
         restore_error_handler();
 
         $this->iniSetMessage = 'Calls to <a href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are working correctly.';
+
         return true;
     }
 
@@ -541,14 +564,93 @@ class RequirementsChecker
         // 32M check.
         if ($memoryLimitInBytes <= 33554432) {
             $this->memoryMessage = 'Craft CMS requires at least 32M of memory allocated to PHP to operate smoothly.';
+
             return false;
-        // 128M check
+            // 128M check
         } else if ($memoryLimitInBytes <= 134217728) {
             $this->memoryMessage = 'You have 128M allocated to PHP which should be fine for most sites. If you will be processing very large images or having Craft CMS automatically backup a large database, you might need to increase this to 256M or higher.';
+
             return false;
         }
 
         $this->memoryMessage = 'There is '.$memoryLimit.' of memory allocated to PHP.';
+
         return true;
+    }
+
+    function checkWebRoot()
+    {
+        $pathService = Craft::$app->getPath();
+        $publicFolders = [];
+
+        // The paths to check.
+        $folders = [
+            'storage' => $pathService->getStoragePath(),
+            'plugins' => $pathService->getPluginsPath(),
+            'config' => $pathService->getConfigPath(),
+            'app' => $pathService->getAppPath(),
+            'templates' => $pathService->getSiteTemplatesPath(),
+            'translations' => $pathService->getSiteTranslationsPath(),
+        ];
+
+        foreach ($folders as $key => $path) {
+            if ($realPath = realpath($path)) {
+                $folders[$key] = $this->isPathInsideWebroot($realPath);
+            }
+        }
+
+        foreach ($folders as $key => $result) {
+
+            // We were able to connect to one of our exposed folder checks.
+            if ($result === true) {
+                $publicFolders[] = $key;
+            }
+        }
+
+        if (count($publicFolders) > 0) {
+            $folderString = '';
+
+            for ($counter = 0; $counter < count($publicFolders); $counter++) {
+                $folderString .= '“craft/'.$publicFolders[$counter].'”';
+
+                if (isset($publicFolders[$counter + 1]) && count($publicFolders) > 2) {
+                    $folderString .= ', ';
+                }
+
+                if (isset($publicFolders[$counter + 1]) && $counter + 2 == count($publicFolders)) {
+                    if (count($publicFolders) == 2) {
+                        $folderString .= ' and ';
+                    } else {
+                        $folderString .= 'and ';
+                    }
+                }
+            }
+
+            if (count($publicFolders) > 1) {
+                $folderString .= ' folders';
+            } else {
+                $folderString .= ' folder';
+            }
+
+            $this->webRootFolderMessage = 'Your Craft CMS '.$folderString.' appear to be publicly accessible which is a security risk. You should strongly consider moving them above your web root or blocking access to them via .htaccess or web.config files.';
+
+            return false;
+        }
+
+        return true;
+    }
+
+    function isPathInsideWebroot($pathToTest)
+    {
+        $pathToTest = \Craft\app\helpers\Io::normalizePathSeparators($pathToTest);
+
+        // Get the base path without the script name.
+        $subBasePath = \Craft\app\helpers\Io::normalizePathSeparators(mb_substr(Craft::$app->getRequest()->getScriptFile(), 0, -mb_strlen(Craft::$app->getRequest()->getScriptFilename())));
+
+        if (mb_strpos($pathToTest, $subBasePath) !== false) {
+            return true;
+        }
+
+        return false;
     }
 }
