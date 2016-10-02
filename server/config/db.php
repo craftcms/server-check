@@ -19,4 +19,7 @@ return array(
 
 	// The name of the database to connect to.
 	'database' => 'craft',
+
+	// The database driver to use. Either 'mysql' for MySQL or 'pgsql' for PostgreSQL.
+	'driver' => 'mysql',
 );

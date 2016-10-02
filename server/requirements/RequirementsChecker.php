@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://craftcms.com/
+ * @link      https://craftcms.com/
  * @copyright Copyright (c) Pixel & Tonic, Inc.
- * @license   http://craftcms.com/license
+ * @license   https://craftcms.com/license
  */
 
 if (version_compare(PHP_VERSION, '4.3', '<')) {
@@ -52,6 +52,7 @@ class RequirementsChecker
     var $result;
 
     var $requiredMySqlVersion = '5.5.0';
+    var $requiredPgSqlVersion = '9.2';
 
     /**
      * Check the given requirements, collecting results into internal field.
@@ -306,8 +307,6 @@ class RequirementsChecker
         // we use special variable names here to avoid conflict when extracting data
         if (is_array($_data_)) {
             extract($_data_, EXTR_PREFIX_SAME, 'data');
-        } else {
-            $data = $_data_;
         }
 
         if ($_return_) {
@@ -396,6 +395,9 @@ class RequirementsChecker
         return $nowDate;
     }
 
+    /**
+     * @return boolean
+     */
     function checkDatabaseCreds()
     {
         // Check if we're running as a standalone script.
@@ -405,18 +407,21 @@ class RequirementsChecker
             $dbCreds = @require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php');
 
             if (is_array($dbCreds)) {
-                if ($dbCreds['server'] && $dbCreds['user'] && $dbCreds['password'] && $dbCreds['database']) {
+                if ($dbCreds['server'] && $dbCreds['user'] && $dbCreds['password'] && $dbCreds['database'] && $dbCreds['driver']) {
                     $this->dbCreds = $dbCreds;
 
                     return true;
                 }
             }
         } else if ($this->isCraftRunning()) {
+            $configService = Craft::$app->getConfig();
+
             // Check if we're running in the context of Craft.
-            $this->dbCreds['server'] = Craft::$app->getConfig()->get('server', 'db');
-            $this->dbCreds['user'] = Craft::$app->getConfig()->get('user', 'db');
-            $this->dbCreds['password'] = Craft::$app->getConfig()->get('password', 'db');
-            $this->dbCreds['database'] = Craft::$app->getConfig()->get('database', 'db');
+            $this->dbCreds['server'] = $configService->get('server', 'db');
+            $this->dbCreds['user'] = $configService->get('user', 'db');
+            $this->dbCreds['password'] = $configService->get('password', 'db');
+            $this->dbCreds['database'] = $configService->get('database', 'db');
+            $this->dbCreds['driver'] = $configService->get('driver', 'db');
 
             return true;
         }
@@ -494,22 +499,30 @@ class RequirementsChecker
         return false;
     }
 
-    function checkMySqlServerVersion()
+    /**
+     * @return boolean|mixed
+     */
+    function checkDatabaseServerVersion()
     {
         if (($conn = $this->getDbConnection()) !== false) {
-            return version_compare($conn->getAttribute(PDO::ATTR_SERVER_VERSION), $this->requiredMySqlVersion, ">=");
+            $requiredVersion = $this->dbCreds['driver'] == 'mysql' ? $this->requiredMySqlVersion : $this->requiredPgSqlVersion;
+
+            return version_compare($conn->getAttribute(PDO::ATTR_SERVER_VERSION), $requiredVersion, ">=");
         }
 
         return false;
     }
 
+    /**
+     * @return boolean|PDO
+     */
     function getDbConnection()
     {
         static $conn;
 
         if (!$conn) {
             try {
-                $conn = new PDO("mysql:host={$this->dbCreds['server']};dbname={$this->dbCreds['database']}", $this->dbCreds['user'], $this->dbCreds['password']);
+                $conn = new PDO("{$this->dbCreds['driver']}:host={$this->dbCreds['server']};dbname={$this->dbCreds['database']}", $this->dbCreds['user'], $this->dbCreds['password']);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 $this->dbConnectionError = "Can't connect to the database with the credentials supplied in db.php. Please double check them and try again.";
@@ -521,6 +534,9 @@ class RequirementsChecker
         return $conn;
     }
 
+    /**
+     * @return boolean
+     */
     function checkIniSet()
     {
         $oldValue = ini_get('memory_limit');
@@ -556,6 +572,9 @@ class RequirementsChecker
         return true;
     }
 
+    /**
+     * @return boolean
+     */
     function checkMemory()
     {
         $memoryLimit = ini_get('memory_limit');
@@ -579,6 +598,9 @@ class RequirementsChecker
         return true;
     }
 
+    /**
+     * @return boolean
+     */
     function checkWebRoot()
     {
         $pathService = Craft::$app->getPath();
@@ -641,12 +663,17 @@ class RequirementsChecker
         return true;
     }
 
+    /**
+     * @param string $pathToTest
+     *
+     * @return boolean
+     */
     function isPathInsideWebroot($pathToTest)
     {
         $pathToTest = \Craft\app\helpers\Io::normalizePathSeparators($pathToTest);
 
         // Get the base path without the script name.
-        $subBasePath = \Craft\app\helpers\Io::normalizePathSeparators(mb_substr(Craft::$app->getRequest()->getScriptFile(), 0, -mb_strlen(Craft::$app->getRequest()->getScriptFilename())));
+        $subBasePath = \Craft\app\helpers\Io::normalizePathSeparators(mb_substr(Craft::$app->getRequest()->getScriptFile(), 0, -mb_strlen(Craft::$app->getRequest()->getScriptUrl())));
 
         if (mb_strpos($pathToTest, $subBasePath) !== false) {
             return true;
