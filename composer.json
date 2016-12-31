@@ -18,5 +18,8 @@
     "docs": "https://craftcms.com/docs",
     "rss": "https://craftcms.com/changelog.rss"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "autoload": {
+    "classmap": ["server/requirements"]
+  }
 }
