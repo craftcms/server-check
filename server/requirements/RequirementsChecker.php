@@ -509,6 +509,7 @@ class RequirementsChecker
 
         set_error_handler(array($this, 'muteErrorHandler'));
         $result = ini_set('memory_limit', '442M');
+        $newValue = ini_get('memory_limit');
         restore_error_handler();
 
         // ini_set can return false or an empty string depending on your php version / FastCGI.
@@ -521,7 +522,7 @@ class RequirementsChecker
 
         // ini_set can return false or an empty string or the current value of memory_limit depending on your php
         // version and FastCGI. Regard, calling it didn't work, but there was no error.
-        if ($result === false || $result === '' || $result === $oldValue) {
+        if ($result === false || $result === '' || $result === $newValue) {
             $this->iniSetMessage = 'It appears calls to <a href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are not working for Craft. You may need to increase some settings in your php.ini file such as <a href="http://php.net/manual/en/ini.core.php#ini.memory-limit">memory_limit</a> and <a href="http://php.net/manual/en/info.configuration.php#ini.max-execution-time">max_execution_time</a> for long running operations like updating and asset transformations.';
 
             // Return true here so it's not a "fatal" error, but will be treated as a warning.
