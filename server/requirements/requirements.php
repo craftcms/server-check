@@ -5,10 +5,10 @@
 
 $requirements = array(
     array(
-        'name' => 'PHP 5.6+',
+        'name' => 'PHP 7.0+',
         'mandatory' => true,
-        'condition' => version_compare(PHP_VERSION, '5.6.0', '>='),
-        'memo' => 'PHP 5.6.0 or higher is required.',
+        'condition' => version_compare(PHP_VERSION, '7.0.0', '>='),
+        'memo' => 'PHP 7.0 or higher is required.',
     ),
 );
 
