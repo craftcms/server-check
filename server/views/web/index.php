@@ -27,7 +27,7 @@
 		<p>
 			There are two kinds of requirements being checked. Mandatory requirements are those that have to be met
 			to allow Craft to work as expected. There are also some optional requirements being checked which will
-			show you a warning when they do not meet. You can use Craft framework without them but some specific
+			show you a warning when they do not meet. You can use Craft without them but some specific
 			functionality may be not available in this case.
 		</p>
 
