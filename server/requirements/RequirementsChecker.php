@@ -68,7 +68,7 @@ class RequirementsChecker
     function check($requirements)
     {
         if (is_string($requirements)) {
-            $requirements = require($requirements);
+            $requirements = require $requirements;
         }
 
         if (!is_array($requirements)) {
@@ -202,7 +202,7 @@ class RequirementsChecker
             return false;
         }
 
-        if (strncasecmp($extensionVersion, 'PECL-', 5) == 0) {
+        if (strncasecmp($extensionVersion, 'PECL-', 5) === 0) {
             $extensionVersion = substr($extensionVersion, 5);
         }
 
@@ -224,7 +224,7 @@ class RequirementsChecker
             return false;
         }
 
-        return ((int)$value == 1 || strtolower($value) == 'on');
+        return ((int)$value === 1 || strtolower($value) === 'on');
     }
 
     /**
@@ -242,7 +242,7 @@ class RequirementsChecker
             return true;
         }
 
-        return (strtolower($value) == 'off');
+        return (strtolower($value) === 'off');
     }
 
     /**
@@ -313,12 +313,12 @@ class RequirementsChecker
             ob_start();
             ob_implicit_flush(false);
 
-            require($_viewFile_);
+            require $_viewFile_;
 
             return ob_get_clean();
         }
 
-        require($_viewFile_);
+        require $_viewFile_;
 
         return null;
     }
@@ -378,9 +378,7 @@ class RequirementsChecker
      */
     function getServerInfo()
     {
-        $info = isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : '';
-
-        return $info;
+        return isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : '';
     }
 
     /**
@@ -390,9 +388,7 @@ class RequirementsChecker
      */
     function getCurrentDate()
     {
-        $nowDate = @strftime('%Y-%m-%d %H:%M', time());
-
-        return $nowDate;
+        return @strftime('%Y-%m-%d %H:%M', time());
     }
 
     /**
@@ -400,20 +396,7 @@ class RequirementsChecker
      */
     function checkDatabaseCreds()
     {
-        // Check if we're running as a standalone script.
-        $dbConfigPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
-
-        if (is_file($dbConfigPath)) {
-            $dbCreds = @require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php');
-
-            if (is_array($dbCreds)) {
-                if ($dbCreds['server'] && $dbCreds['user'] && $dbCreds['password'] && $dbCreds['database'] && $dbCreds['driver']) {
-                    $this->dbCreds = $dbCreds;
-
-                    return true;
-                }
-            }
-        } else if ($this->isCraftRunning()) {
+        if ($this->isCraftRunning()) {
             $configService = Craft::$app->getConfig();
 
             // Check if we're running in the context of Craft.
@@ -424,6 +407,21 @@ class RequirementsChecker
             $this->dbCreds['driver'] = $configService->get('driver', 'db');
 
             return true;
+        } else {
+            // Check if we're running as a standalone script.
+            $dbConfigPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
+
+            if (is_file($dbConfigPath)) {
+                $dbCreds = @require dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
+
+                if (is_array($dbCreds)) {
+                    if ($dbCreds['server'] && $dbCreds['user'] && $dbCreds['password'] && $dbCreds['database'] && $dbCreds['driver']) {
+                        $this->dbCreds = $dbCreds;
+
+                        return true;
+                    }
+                }
+            }
         }
 
         return false;
@@ -437,49 +435,6 @@ class RequirementsChecker
     }
 
     /**
-     * @return boolean
-     */
-    function testIconvTruncateBug()
-    {
-        $warningMessage = 'You have a buggy version of iconv installed. (See <a href="https://bugs.php.net/bug.php?id=48147">PHP bug #48147</a> and <a href="http://sourceware.org/bugzilla/show_bug.cgi?id=13541">iconv bug #13541</a>.)';
-        $ignoreMessage = 'The version of iconv you have installed does not support //IGNORE, making it unusable for transcoding purposes.';
-        $recommendedMessage = '<a href="http://php.net/manual/en/book.iconv.php">iconv</a> is recommended for more robust character set conversion support.';
-
-        if (function_exists('iconv')) {
-            // Let's see what happens.
-            set_error_handler(array($this, 'muteErrorHandler'));
-            $r = iconv('utf-8', 'ascii//IGNORE', "\xCE\xB1".str_repeat('a', 9000));
-            restore_error_handler();
-
-            if ($r === false) {
-                $this->iconvMessage = $ignoreMessage;
-
-                return false;
-            }
-
-            if (($c = strlen($r)) < 9000) {
-                $this->iconvMessage = $warningMessage;
-
-                return false;
-            }
-
-            if ($c > 9000) {
-                $this->iconvMessage = $warningMessage;
-
-                return false;
-            }
-
-            $this->iconvMessage = $recommendedMessage;
-
-            return true;
-        }
-
-        $this->iconvMessage = $recommendedMessage;
-
-        return false;
-    }
-
-    /**
      * Checks to see if the MySQL InnoDB storage engine is installed and enabled.
      *
      * @return boolean
@@ -490,7 +445,7 @@ class RequirementsChecker
             $results = $conn->query('SHOW ENGINES');
 
             foreach ($results as $result) {
-                if (strtolower($result['Engine']) == 'innodb' && strtolower($result['Support']) != 'no') {
+                if (strtolower($result['Engine']) === 'innodb' && strtolower($result['Support']) !== 'no') {
                     return true;
                 }
             }
@@ -622,14 +577,21 @@ class RequirementsChecker
             'storage' => $pathService->getStoragePath(),
             'plugins' => $pathService->getPluginsPath(),
             'config' => $pathService->getConfigPath(),
-            'app' => $pathService->getAppPath(),
             'templates' => $pathService->getSiteTemplatesPath(),
             'translations' => $pathService->getSiteTranslationsPath(),
         );
 
+        // We know Craft is running for this test.
+        if (!\craft\helpers\App::isComposerInstall()) {
+            // app folder does not exist on a composer install.
+            $folders['app'] = $pathService->getAppPath();
+        }
+
         foreach ($folders as $key => $path) {
-            if ($realPath = realpath($path)) {
+            if ($path && $realPath = realpath($path)) {
                 $folders[$key] = $this->isPathInsideWebroot($realPath);
+            } else {
+                $folders[$key] = false;
             }
         }
 
@@ -651,8 +613,8 @@ class RequirementsChecker
                     $folderString .= ', ';
                 }
 
-                if (isset($publicFolders[$counter + 1]) && $counter + 2 == count($publicFolders)) {
-                    if (count($publicFolders) == 2) {
+                if (isset($publicFolders[$counter + 1]) && $counter + 2 === count($publicFolders)) {
+                    if (count($publicFolders) === 2) {
                         $folderString .= ' and ';
                     } else {
                         $folderString .= 'and ';
@@ -681,13 +643,14 @@ class RequirementsChecker
      */
     function isPathInsideWebroot($pathToTest)
     {
-        $pathToTest = \Craft\app\helpers\Io::normalizePathSeparators($pathToTest);
+        // If the path is empty, the folder doesn't even exist.
+        if ($pathToTest) {
+            // Get the base path without the script name.
+            $subBasePath = \craft\helpers\FileHelper::normalizePath(mb_substr(Craft::$app->getRequest()->getScriptFile(), 0, -mb_strlen(Craft::$app->getRequest()->getScriptUrl())));
 
-        // Get the base path without the script name.
-        $subBasePath = \Craft\app\helpers\Io::normalizePathSeparators(mb_substr(Craft::$app->getRequest()->getScriptFile(), 0, -mb_strlen(Craft::$app->getRequest()->getScriptUrl())));
-
-        if (mb_strpos($pathToTest, $subBasePath) !== false) {
-            return true;
+            if (mb_strpos($pathToTest, $subBasePath) !== false) {
+                return true;
+            }
         }
 
         return false;

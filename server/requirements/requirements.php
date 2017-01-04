@@ -109,7 +109,7 @@ $requirements = array_merge($requirements, array(
     array(
         'name' => 'Multibyte String extension (with Function Overloading disabled)',
         'mandatory' => true,
-        'condition' => (extension_loaded('mbstring') && ini_get('mbstring.func_overload') == 0),
+        'condition' => extension_loaded('mbstring') && ini_get('mbstring.func_overload') == 0,
         'memo' => 'Craft CMS requires the <a href="http://www.php.net/manual/en/book.mbstring.php">Multibyte String</a> extension with <a href="http://php.net/manual/en/mbstring.overload.php">Function Overloading</a> disabled in order to run.'
     ),
     array(
@@ -121,7 +121,7 @@ $requirements = array_merge($requirements, array(
     array(
         'name' => 'GD extension or ImageMagick extension',
         'mandatory' => true,
-        'condition' => (extension_loaded('gd') || extension_loaded('imagick')),
+        'condition' => extension_loaded('gd') || extension_loaded('imagick'),
         'memo' => 'The <a href="http://php.net/manual/en/book.image.php">GD</a> or <a href="http://php.net/manual/en/book.imagick.php">ImageMagick</a> extension is required, however ImageMagick is recommended as it adds animated GIF support, and preserves 8-bit and 24-bit PNGs during image transforms.'
     ),
     array(
@@ -166,8 +166,8 @@ $requirements = array_merge($requirements, array(
     array(
         'name' => 'iconv extension',
         'mandatory' => false,
-        'condition' => $this->testIconvTruncateBug(),
-        'memo' => $this->iconvMessage,
+        'condition' => function_exists('iconv'),
+        'memo' => '<a href="http://php.net/manual/en/book.iconv.php">iconv</a> is recommended for more robust character set conversion support.',
     ),
     array(
         'name' => 'Max Upload File Size',
