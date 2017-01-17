@@ -1,4 +1,4 @@
-# Craft 3 Server Check
+# Craft Server Check
 
 This script checks if a server meets the minimum requirements to run a Craft 3 installation.
 
