@@ -15,11 +15,16 @@
     "issues": "https://github.com/craftcms/server-check/issues?state=open",
     "forum": "https://craftcms.stackexchange.com/",
     "source": "https://github.com/craftcms/server-check",
-    "docs": "https://craftcms.com/docs",
-    "rss": "https://craftcms.com/changelog.rss"
+    "docs": "https://github.com/craftcms/docs",
+    "rss": "https://github.com/craftcms/server-check/releases.atom"
   },
   "license": "MIT",
+  "require": {
+    "php": ">=7.0.0"
+  },
   "autoload": {
-    "classmap": ["server/requirements"]
+    "classmap": [
+      "server/requirements"
+    ]
   }
 }
