@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## Unreleased
+
+### Changed
+- Tweaked keywords in composer.json 
+
 ## 1.0.7 - 2017-01-30
 
 ### Changed
