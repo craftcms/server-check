@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## Unreleased
+## 1.0.7 - 2017-01-30
 
 ### Changed
 - Updated the `support` properties in composer.json
