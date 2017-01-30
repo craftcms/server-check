@@ -5,6 +5,7 @@ Changelog
 
 ### Changed
 - Updated the `support` properties in composer.json
+- Craft 3 no longer requires `mcrypt`.
 
 ## 1.0.6 - 2017-01-17
 
