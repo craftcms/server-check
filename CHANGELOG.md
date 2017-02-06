@@ -3,8 +3,13 @@ Changelog
 
 ## Unreleased
 
+## 1.0.8 - 2017-02-06
+
 ### Changed
 - Tweaked keywords in composer.json 
+
+### Fixed
+- Fixed a bug where the default database port wasn’t being accounted for when connecting to the database.
 
 ## 1.0.7 - 2017-01-30
 
