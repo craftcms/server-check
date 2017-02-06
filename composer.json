@@ -2,12 +2,10 @@
   "name": "craftcms/server-check",
   "description": "Craft CMS Server Check",
   "keywords": [
-    "craft",
     "cms",
     "craftcms",
     "requirements",
-    "server",
-    "check"
+    "yii2"
   ],
   "homepage": "https://craftcms.com/",
   "support": {
