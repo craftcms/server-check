@@ -72,18 +72,18 @@ class RequirementsChecker
         }
 
         if (!is_array($requirements)) {
-            $this->usageError('Requirements must be an array, "'.gettype($requirements).'" has been given!');
+            $this->usageError('Requirements must be an array, "' . gettype($requirements) . '" has been given!');
         }
 
         if (!isset($this->result) || !is_array($this->result)) {
-            $this->result = array(
-                'summary' => array(
+            $this->result = [
+                'summary' => [
                     'total' => 0,
                     'errors' => 0,
                     'warnings' => 0,
-                ),
-                'requirements' => array(),
-            );
+                ],
+                'requirements' => [],
+            ];
         }
 
         foreach ($requirements as $key => $rawRequirement) {
@@ -118,7 +118,7 @@ class RequirementsChecker
      */
     function checkCraft()
     {
-        return $this->check(dirname(__FILE__).DIRECTORY_SEPARATOR.'requirements.php');
+        return $this->check(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'requirements.php');
     }
 
     /**
@@ -170,12 +170,12 @@ class RequirementsChecker
             $this->usageError('Nothing to render!');
         }
 
-        $baseViewFilePath = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'views';
+        $baseViewFilePath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'views';
 
         if (!empty($_SERVER['argv'])) {
-            $viewFilename = $baseViewFilePath.DIRECTORY_SEPARATOR.'console'.DIRECTORY_SEPARATOR.'index.php';
+            $viewFilename = $baseViewFilePath . DIRECTORY_SEPARATOR . 'console' . DIRECTORY_SEPARATOR . 'index.php';
         } else {
-            $viewFilename = $baseViewFilePath.DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'index.php';
+            $viewFilename = $baseViewFilePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'index.php';
         }
 
         $this->renderViewFile($viewFilename, $this->result);
@@ -185,8 +185,8 @@ class RequirementsChecker
      * Checks if the given PHP extension is available and its version matches the given one.
      *
      * @param string $extensionName The PHP extension name.
-     * @param string $version       The required PHP extension version.
-     * @param string $compare       The comparison operator, by default '>='.
+     * @param string $version The required PHP extension version.
+     * @param string $compare The comparison operator, by default '>='.
      *
      * @return boolean If the PHP extension version matches or not.
      */
@@ -296,9 +296,9 @@ class RequirementsChecker
      * Renders a view file.
      * This method includes the view file as a PHP script and captures the display result if required.
      *
-     * @param string  $_viewFile_ The view file.
-     * @param array   $_data_     The data to be extracted and made available to the view file.
-     * @param boolean $_return_   Whether the rendering result should be returned as a string.
+     * @param string $_viewFile_ The view file.
+     * @param array $_data_ The data to be extracted and made available to the view file.
+     * @param boolean $_return_ Whether the rendering result should be returned as a string.
      *
      * @return string The rendering result. Null if the rendering result is not required.
      */
@@ -326,7 +326,7 @@ class RequirementsChecker
     /**
      * Normalizes requirement ensuring it has correct format.
      *
-     * @param array   $requirement    The raw requirement.
+     * @param array $requirement The raw requirement.
      * @param integer $requirementKey The requirement key in the list.
      *
      * @return array normalized requirement.
@@ -342,7 +342,7 @@ class RequirementsChecker
         }
 
         if (!array_key_exists('name', $requirement)) {
-            $requirement['name'] = is_numeric($requirementKey) ? 'Requirement #'.$requirementKey : $requirementKey;
+            $requirement['name'] = is_numeric($requirementKey) ? 'Requirement #' . $requirementKey : $requirementKey;
         }
 
         if (!array_key_exists('mandatory', $requirement)) {
@@ -410,10 +410,10 @@ class RequirementsChecker
             return true;
         } else {
             // Check if we're running as a standalone script.
-            $dbConfigPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
+            $dbConfigPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'db.php';
 
             if (is_file($dbConfigPath)) {
-                $dbCreds = @require dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
+                $dbCreds = @require dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'db.php';
 
                 if (is_array($dbCreds)) {
                     if ($dbCreds['server'] && $dbCreds['user'] && $dbCreds['password'] && $dbCreds['database'] && $dbCreds['driver']) {
@@ -470,7 +470,7 @@ class RequirementsChecker
                     $requiredVersion = $this->requiredPgSqlVersion;
                     break;
                 default:
-                    throw new Exception('Unsupported connection type: '.$this->dbCreds['driver']);
+                    throw new Exception('Unsupported connection type: ' . $this->dbCreds['driver']);
             }
 
 
@@ -514,7 +514,7 @@ class RequirementsChecker
     {
         $oldValue = ini_get('memory_limit');
 
-        set_error_handler(array($this, 'muteErrorHandler'));
+        set_error_handler([$this, 'muteErrorHandler']);
         $result = ini_set('memory_limit', '442M');
         $newValue = ini_get('memory_limit');
         restore_error_handler();
@@ -537,7 +537,7 @@ class RequirementsChecker
         }
 
         // Resetting should work, but might as well be extra careful.
-        set_error_handler(array($this, 'muteErrorHandler'));
+        set_error_handler([$this, 'muteErrorHandler']);
         ini_set('memory_limit', $oldValue);
         restore_error_handler();
 
@@ -561,13 +561,15 @@ class RequirementsChecker
 
             return false;
             // 128M check
-        } else if ($memoryLimitInBytes <= 134217728) {
-            $this->memoryMessage = 'You have 128M allocated to PHP which should be fine for most sites. If you will be processing very large images or having Craft CMS automatically backup a large database, you might need to increase this to 256M or higher.';
+        } else {
+            if ($memoryLimitInBytes <= 134217728) {
+                $this->memoryMessage = 'You have 128M allocated to PHP which should be fine for most sites. If you will be processing very large images or having Craft CMS automatically backup a large database, you might need to increase this to 256M or higher.';
 
-            return false;
+                return false;
+            }
         }
 
-        $this->memoryMessage = 'There is '.$memoryLimit.' of memory allocated to PHP.';
+        $this->memoryMessage = 'There is ' . $memoryLimit . ' of memory allocated to PHP.';
 
         return true;
     }
@@ -578,16 +580,16 @@ class RequirementsChecker
     function checkWebRoot()
     {
         $pathService = Craft::$app->getPath();
-        $publicFolders = array();
+        $publicFolders = [];
 
         // The paths to check.
-        $folders = array(
+        $folders = [
             'storage' => $pathService->getStoragePath(),
             'plugins' => $pathService->getPluginsPath(),
             'config' => $pathService->getConfigPath(),
             'templates' => $pathService->getSiteTemplatesPath(),
             'translations' => $pathService->getSiteTranslationsPath(),
-        );
+        ];
 
         // We know Craft is running for this test.
         if (!\craft\helpers\App::isComposerInstall()) {
@@ -615,7 +617,7 @@ class RequirementsChecker
             $folderString = '';
 
             for ($counter = 0; $counter < count($publicFolders); $counter++) {
-                $folderString .= '“craft/'.$publicFolders[$counter].'”';
+                $folderString .= '“craft/' . $publicFolders[$counter] . '”';
 
                 if (isset($publicFolders[$counter + 1]) && count($publicFolders) > 2) {
                     $folderString .= ', ';
@@ -636,7 +638,7 @@ class RequirementsChecker
                 $folderString .= ' folder';
             }
 
-            $this->webRootFolderMessage = 'Your Craft CMS '.$folderString.' appear to be publicly accessible which is a security risk. You should strongly consider moving them above your web root or blocking access to them via .htaccess or web.config files.';
+            $this->webRootFolderMessage = 'Your Craft CMS ' . $folderString . ' appear to be publicly accessible which is a security risk. You should strongly consider moving them above your web root or blocking access to them via .htaccess or web.config files.';
 
             return false;
         }
@@ -654,7 +656,8 @@ class RequirementsChecker
         // If the path is empty, the folder doesn't even exist.
         if ($pathToTest) {
             // Get the base path without the script name.
-            $subBasePath = \craft\helpers\FileHelper::normalizePath(mb_substr(Craft::$app->getRequest()->getScriptFile(), 0, -mb_strlen(Craft::$app->getRequest()->getScriptUrl())));
+            $subBasePath = \craft\helpers\FileHelper::normalizePath(mb_substr(Craft::$app->getRequest()->getScriptFile(),
+                0, -mb_strlen(Craft::$app->getRequest()->getScriptUrl())));
 
             if (mb_strpos($pathToTest, $subBasePath) !== false) {
                 return true;
