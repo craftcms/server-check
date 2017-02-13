@@ -186,7 +186,13 @@ $requirements = array_merge($requirements, array(
         'mandatory' => true,
         'condition' => function_exists('password_hash'),
         'memo' => 'The <a href="https://secure.php.net/manual/en/function.password-hash.php">password_hash()</a> function is required so Craft can create secure passwords.',
-    )
+    ),
+    array(
+        'name' => 'Zip extension',
+        'mandatory' => true,
+        'condition' => extension_loaded('zip'),
+        'memo' => 'The <a href="https://secure.php.net/manual/en/book.zip.php">zip</a> extension is required for zip and unzip operations.',
+    ),
 ));
 
 return $requirements;
