@@ -3,6 +3,12 @@ Changelog
 
 ## Unreleased
 
+## 1.0.9 - 2017-02-13
+
+### Added
+- Added the PHP `password_hash()` function as a mandatory requirement.
+- Added the PHP Zip extension as a mandatory requirement.
+
 ## 1.0.8 - 2017-02-06
 
 ### Changed
