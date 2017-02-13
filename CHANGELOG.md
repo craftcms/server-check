@@ -3,6 +3,9 @@ Changelog
 
 ## Unreleased
 
+### Added
+- Added the PHP `password_hash()` function as a mandatory requirement.
+
 ## 1.0.8 - 2017-02-06
 
 ### Changed

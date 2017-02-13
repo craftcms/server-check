@@ -181,6 +181,12 @@ $requirements = array_merge($requirements, array(
         'condition' => $this->checkMemory(),
         'memo' => $this->memoryMessage,
     ),
+    array(
+        'name' => 'password_hash()',
+        'mandatory' => true,
+        'condition' => function_exists('password_hash'),
+        'memo' => 'The <a href="https://secure.php.net/manual/en/function.password-hash.php">password_hash()</a> function is required so Craft can create secure passwords.',
+    )
 ));
 
 return $requirements;
