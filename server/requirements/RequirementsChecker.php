@@ -48,6 +48,7 @@ class RequirementsChecker
     var $dbConnectionError;
     var $iniSetMessage;
     var $memoryMessage;
+    var $executionTimeMessage;
     var $webRootFolderMessage;
     var $result;
 
@@ -662,5 +663,23 @@ class RequirementsChecker
         }
 
         return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    function checkExecutionTime()
+    {
+        $executionTime = ini_get('max_execution_time');
+        if ($executionTime < 60 && $executionTime != 0)
+        {
+            $this->executionTimeMessage = 'Your <a href="http://php.net/manual/en/info.configuration.php#ini.max-execution-time">max_execution_time</a> is below 60 seconds. Consider raising it for the craft installation process.';
+            return false;
+        }
+        else
+        {
+            $this->executionTimeMessage = 'Your <a href="http://php.net/manual/en/info.configuration.php#ini.max-execution-time">max_execution_time</a> is '.$executionTime.'. That should be fine!';
+        }
+        return true;
     }
 }

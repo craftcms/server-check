@@ -195,4 +195,12 @@ $requirements = array_merge($requirements, array(
     ),
 ));
 
+if (!$this->isCraftRunning()) {
+    $requirements[] = array(
+        'name' => 'Execution time',
+        'mandatory' => false,
+        'condition' => $this->checkExecutionTime(),
+        'memo' => $this->executionTimeMessage
+    );
+}
 return $requirements;
