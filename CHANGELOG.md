@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## Unreleased
+## 1.0.10 - 2017-02-21
 
 ### Fixed
 - Fixed a bug where the requirements checker would error if the Craft project lived at the root of the file system.
