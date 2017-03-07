@@ -533,11 +533,20 @@ class RequirementsChecker
 
     /**
      * @return boolean
+     *
+     * @see http://php.net/manual/en/ini.core.php#ini.memory-limit
      */
     function checkMemory()
     {
         $memoryLimit = ini_get('memory_limit');
         $memoryLimitInBytes = $this->getByteSize($memoryLimit);
+
+        // -1 == no limit
+        if ($memoryLimitInBytes === -1) {
+            $this->memoryMessage = 'Your PHP configuration does not impose a memory limit.';
+
+            return true;
+        }
 
         // 32M check
         if ($memoryLimitInBytes <= 33554432) {
