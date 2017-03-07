@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.11 - 2017-03-07
+
+### Fixed
+- Fixed a bug where the PHP memory limit check would fail if `memory_limit` was set to `-1`, which means no limit. 
+
 ## 1.0.10 - 2017-02-21
 
 ### Fixed

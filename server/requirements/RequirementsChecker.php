@@ -248,48 +248,33 @@ class RequirementsChecker
     /**
      * Gets the size in bytes from verbose size representation. For example: '5K' => 5 * 1024
      *
-     * @param string $verboseSize The verbose size representation.
+     * @param string $value The verbose size representation.
      *
      * @return integer The actual size in bytes.
      */
-    function getByteSize($verboseSize)
+    function getByteSize($value)
     {
-        if (empty($verboseSize)) {
-            return 0;
+        // Copied from craft\helpers\App::phpConfigValueInBytes()
+        if (!preg_match('/(\d+)(K|M|G)/i', $value, $matches)) {
+            return (int)$value;
         }
 
-        if (is_numeric($verboseSize)) {
-            return (int)$verboseSize;
+        $value = (int)$matches[1];
+
+        // Multiply!
+        switch (strtolower($matches[2])) {
+            case 'g':
+                $value *= 1024;
+            // no break
+            case 'm':
+                $value *= 1024;
+            // no break
+            case 'k':
+                $value *= 1024;
+            // no break
         }
 
-        $sizeUnit = trim($verboseSize, '0123456789');
-        $size = str_replace($sizeUnit, '', $verboseSize);
-        $size = trim($size);
-
-        if (!is_numeric($size)) {
-            return 0;
-        }
-
-        switch (strtolower($sizeUnit)) {
-            case 'kb':
-            case 'k': {
-                return $size * 1024;
-            }
-
-            case 'mb':
-            case 'm': {
-                return $size * 1024 * 1024;
-            }
-
-            case 'gb':
-            case 'g': {
-                return $size * 1024 * 1024 * 1024;
-            }
-
-            default: {
-                return 0;
-            }
-        }
+        return $value;
     }
 
     /**
@@ -548,20 +533,30 @@ class RequirementsChecker
 
     /**
      * @return boolean
+     *
+     * @see http://php.net/manual/en/ini.core.php#ini.memory-limit
      */
     function checkMemory()
     {
         $memoryLimit = ini_get('memory_limit');
         $memoryLimitInBytes = $this->getByteSize($memoryLimit);
-        $this->memoryMessage = '';
 
-        // 32M check.
+        // -1 == no limit
+        if ($memoryLimitInBytes === -1) {
+            $this->memoryMessage = 'Your PHP configuration does not impose a memory limit.';
+
+            return true;
+        }
+
+        // 32M check
         if ($memoryLimitInBytes <= 33554432) {
             $this->memoryMessage = 'Craft CMS requires at least 32M of memory allocated to PHP to operate smoothly.';
 
             return false;
-            // 128M check
-        } else if ($memoryLimitInBytes <= 134217728) {
+        }
+
+        // 128M check
+        if ($memoryLimitInBytes <= 134217728) {
             $this->memoryMessage = 'You have 128M allocated to PHP which should be fine for most sites. If you will be processing very large images or having Craft CMS automatically backup a large database, you might need to increase this to 256M or higher.';
 
             return false;
