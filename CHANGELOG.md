@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.12 - 2017-03-19
+
+### Changed
+- Craft 3 Beta 8 compatibility.
+
 ## 1.0.11 - 2017-03-07
 
 ### Fixed
