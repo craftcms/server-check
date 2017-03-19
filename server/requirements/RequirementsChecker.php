@@ -382,15 +382,15 @@ class RequirementsChecker
     function checkDatabaseCreds()
     {
         if ($this->isCraftRunning()) {
-            $configService = Craft::$app->getConfig();
+            $dbConfig = Craft::$app->getConfig()->getDb();
 
             // Check if we're running in the context of Craft.
-            $this->dbCreds['server'] = $configService->get('server', 'db');
-            $this->dbCreds['user'] = $configService->get('user', 'db');
-            $this->dbCreds['password'] = $configService->get('password', 'db');
-            $this->dbCreds['database'] = $configService->get('database', 'db');
-            $this->dbCreds['driver'] = $configService->get('driver', 'db');
-            $this->dbCreds['port'] = $configService->getDbPort();
+            $this->dbCreds['server'] = $dbConfig->server;
+            $this->dbCreds['user'] = $dbConfig->user;
+            $this->dbCreds['password'] = $dbConfig->password;
+            $this->dbCreds['database'] = $dbConfig->database;
+            $this->dbCreds['driver'] = $dbConfig->driver;
+            $this->dbCreds['port'] = $dbConfig->port;
 
             return true;
         } else {
