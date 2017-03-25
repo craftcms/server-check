@@ -61,20 +61,20 @@ if ($this->isCraftRunning()) {
 
 switch ($this->dbCreds['driver']) {
     case 'mysql':
-        $requirements[] = [
+        $requirements[] = array(
             'name' => 'PDO MySQL extension',
             'mandatory' => true,
             'condition' => extension_loaded('pdo_mysql'),
             'memo' => 'The <http://php.net/manual/en/ref.pdo-mysql.php>PDO MySQL</a> extension is required.'
-        ];
+        );
         break;
     case 'pgsql':
-        $requirements[] = [
+        $requirements[] = array(
             'name' => 'PDO PostgreSQL extension',
             'mandatory' => true,
             'condition' => extension_loaded('pdo_pgsql'),
             'memo' => 'The <https://secure.php.net/manual/en/ref.pdo-pgsql.php>PDO PostgreSQL</a> extension is required.'
-        ];
+        );
         break;
     default:
         throw new Exception('Unsupported connection type: '.$this->dbCreds['driver']);

@@ -17,24 +17,20 @@ echo str_pad('', strlen($header), '-')."\n\n";
 
 foreach ($requirements as $key => $requirement)
 {
-	if ($requirement['condition'])
-	{
-		echo $requirement['name'].": OK\n";
-		echo "\n";
-	}
-	else
-	{
-		echo $requirement['name'].': '.($requirement['mandatory'] ? 'FAILED!!!' : 'WARNING!!!')."\n";
+    if ($requirement['condition']) {
+        echo $requirement['name'].": OK\n";
+        echo "\n";
+    } else {
+        echo $requirement['name'].': '.($requirement['mandatory'] ? 'FAILED!!!' : 'WARNING!!!')."\n";
 
-		$memo = strip_tags($requirement['memo']);
+        $memo = strip_tags($requirement['memo']);
 
-		if (!empty($memo))
-		{
-			echo 'Memo: '.strip_tags($requirement['memo'])."\n";
-		}
+        if (!empty($memo)) {
+            echo 'Memo: '.strip_tags($requirement['memo'])."\n";
+        }
 
-		echo "\n";
-	}
+        echo "\n";
+    }
 }
 
 $summaryString = 'Errors: '.$summary['errors'].'   Warnings: '.$summary['warnings'].'   Total checks: '.$summary['total'];
