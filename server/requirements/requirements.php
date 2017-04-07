@@ -85,7 +85,7 @@ $requirements = array_merge($requirements, array(
     array(
         'name' => 'Reflection extension',
         'mandatory' => true,
-        'condition' => class_exists('Reflection', false),
+        'condition' => extension_loaded('reflection'),
         'memo' => 'The <a href="http://php.net/manual/en/class.reflectionextension.php">Reflection</a> extension is required.',
     ),
     array(
