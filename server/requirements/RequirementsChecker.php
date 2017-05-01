@@ -606,18 +606,20 @@ class RequirementsChecker
             }
         }
 
-        if (count($publicFolders) > 0) {
+        $totalPublicFolders = count($publicFolders);
+
+        if ($totalPublicFolders > 0) {
             $folderString = '';
 
-            for ($counter = 0; $counter < count($publicFolders); $counter++) {
+            for ($counter = 0; $counter < $totalPublicFolders; $counter++) {
                 $folderString .= '“craft/'.$publicFolders[$counter].'”';
 
-                if (isset($publicFolders[$counter + 1]) && count($publicFolders) > 2) {
+                if (isset($publicFolders[$counter + 1]) && $totalPublicFolders > 2) {
                     $folderString .= ', ';
                 }
 
-                if (isset($publicFolders[$counter + 1]) && $counter + 2 === count($publicFolders)) {
-                    if (count($publicFolders) === 2) {
+                if (isset($publicFolders[$counter + 1]) && $counter + 2 === $totalPublicFolders) {
+                    if ($totalPublicFolders === 2) {
                         $folderString .= ' and ';
                     } else {
                         $folderString .= 'and ';
@@ -625,7 +627,7 @@ class RequirementsChecker
                 }
             }
 
-            if (count($publicFolders) > 1) {
+            if ($totalPublicFolders > 1) {
                 $folderString .= ' folders';
             } else {
                 $folderString .= ' folder';

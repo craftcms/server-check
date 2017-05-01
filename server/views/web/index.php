@@ -8,7 +8,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<title>Craft Requirements Checker</title>
-	<?php $this->renderViewFile(dirname(__FILE__) . '/css.php'); ?>
+	<?php $this->renderViewFile(__DIR__.'/css.php'); ?>
 </head>
 <body>
 <div class="container">
@@ -70,8 +70,8 @@
 	<hr>
 
 	<div class="footer">
-		<p>Server: <?php echo $this->getServerInfo() . ' ' . $this->getCurrentDate() ?></p>
-		<p>Powered by <a href="http://buildwithcraft.com/" rel="external">Craft</a></p>
+		<p>Server: <?php echo $this->getServerInfo().' '.$this->getCurrentDate() ?></p>
+		<p>Powered by <a href="https://craftcms.com/" rel="external">Craft</a></p>
 	</div>
 </div>
 </body>
