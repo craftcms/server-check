@@ -17,9 +17,6 @@
     "rss": "https://github.com/craftcms/server-check/releases.atom"
   },
   "license": "MIT",
-  "require": {
-    "php": ">=7.0.0"
-  },
   "autoload": {
     "classmap": [
       "server/requirements"

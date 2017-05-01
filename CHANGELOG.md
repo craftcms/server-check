@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.13 - 2017-05-01
+
+### Changed
+- Removed the PHP version requirement from `composer.json`.
+
 ## 1.0.12 - 2017-03-19
 
 ### Changed
