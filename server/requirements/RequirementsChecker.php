@@ -393,24 +393,28 @@ class RequirementsChecker
             $this->dbCreds['port'] = $dbConfig->port;
 
             return true;
-        } else {
-            // Check if we're running as a standalone script.
-            $dbConfigPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
-
-            if (is_file($dbConfigPath)) {
-                $dbCreds = @require dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
-
-                if (is_array($dbCreds)) {
-                    if ($dbCreds['server'] && $dbCreds['user'] && $dbCreds['password'] && $dbCreds['database'] && $dbCreds['driver']) {
-                        $this->dbCreds = $dbCreds;
-
-                        return true;
-                    }
-                }
-            }
         }
 
-        return false;
+        // Check if we're running as a standalone script.
+        $dbConfigPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
+
+        if (!is_file($dbConfigPath)) {
+            return false;
+        }
+
+        $dbCreds = @require dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
+
+        if (!is_array($dbCreds)) {
+            return false;
+        }
+
+        if (empty($dbCreds['server']) || empty($dbCreds['user']) || empty($dbCreds['password']) || empty($dbCreds['database']) || empty($dbCreds['driver'])) {
+            return false;
+        }
+
+        $this->dbCreds = $dbCreds;
+
+        return true;
     }
 
     /**
