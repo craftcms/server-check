@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.14 - 2017-05-07
+
+### Fixed
+- Fixed a bug where the script was considering a blank database password to be invalid. ([#4](https://github.com/craftcms/server-check/issues/4))
+
 ## 1.0.13 - 2017-05-01
 
 ### Changed

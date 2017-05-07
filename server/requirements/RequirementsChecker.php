@@ -408,7 +408,7 @@ class RequirementsChecker
             return false;
         }
 
-        if (empty($dbCreds['server']) || empty($dbCreds['user']) || empty($dbCreds['password']) || empty($dbCreds['database']) || empty($dbCreds['driver'])) {
+        if (empty($dbCreds['server']) || empty($dbCreds['user']) || empty($dbCreds['database']) || empty($dbCreds['driver'])) {
             return false;
         }
 
