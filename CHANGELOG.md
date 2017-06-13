@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.15 - 2017-06-13
+
+### Changed
+- The DOM extension is now mandatory.
+
 ## 1.0.14 - 2017-05-07
 
 ### Fixed

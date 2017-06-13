@@ -153,9 +153,9 @@ $requirements = array_merge($requirements, array(
     ),
     array(
         'name' => 'DOM extension',
-        'mandatory' => false,
+        'mandatory' => true,
         'condition' => extension_loaded('dom'),
-        'memo' => 'The <a href="http://php.net/manual/en/book.dom.php">DOM</a> extension is required for parsing XML feeds as well as <code>yii\web\XmlResponseFormatter</code>.',
+        'memo' => 'The <a href="http://php.net/manual/en/book.dom.php">DOM</a> extension is required.',
     ),
     array(
         'name' => 'iconv extension',
