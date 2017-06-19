@@ -1,6 +1,7 @@
 {
   "name": "craftcms/server-check",
   "description": "Craft CMS Server Check",
+  "version": "1.0.15",
   "keywords": [
     "cms",
     "craftcms",
