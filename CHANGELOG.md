@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.16 - 2017-06-19
+
+### Changed
+- `RequirementsChecker::checkWebRoot()` no longer checks if the `app/` folder is in the web root, as there is no `app/` folder.
+
 ## 1.0.15 - 2017-06-13
 
 ### Changed

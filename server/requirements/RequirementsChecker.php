@@ -588,12 +588,6 @@ class RequirementsChecker
             'translations' => $pathService->getSiteTranslationsPath(),
         );
 
-        // We know Craft is running for this test.
-        if (!\craft\helpers\App::isComposerInstall()) {
-            // app folder does not exist on a composer install.
-            $folders['app'] = $pathService->getAppPath();
-        }
-
         foreach ($folders as $key => $path) {
             if ($path && $realPath = realpath($path)) {
                 $folders[$key] = $this->isPathInsideWebroot($realPath);
