@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.17 - 2017-06-29
+
+### Changed
+- `RequirementsChecker::checkWebRoot()` no longer checks if the `plugins/` folder is in the web root, as there is no `plugins/` folder. 
+
 ## 1.0.16 - 2017-06-19
 
 ### Changed

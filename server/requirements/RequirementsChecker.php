@@ -582,7 +582,6 @@ class RequirementsChecker
         // The paths to check.
         $folders = array(
             'storage' => $pathService->getStoragePath(),
-            'plugins' => $pathService->getPluginsPath(),
             'config' => $pathService->getConfigPath(),
             'templates' => $pathService->getSiteTemplatesPath(),
             'translations' => $pathService->getSiteTranslationsPath(),
