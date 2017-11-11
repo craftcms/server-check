@@ -2,7 +2,7 @@
 /**
  * @link      https://craftcms.com/
  * @copyright Copyright (c) Pixel & Tonic, Inc.
- * @license   https://craftcms.com/license
+ * @license   https://craftcms.github.io/license/
  */
 
 if (version_compare(PHP_VERSION, '4.3', '<')) {
@@ -43,9 +43,12 @@ if (version_compare(PHP_VERSION, '4.3', '<')) {
  */
 class RequirementsChecker
 {
-    var $dbCreds;
+    var $dsn;
+    var $dbDriver;
+    var $dbUser;
+    var $dbPassword;
+
     var $iconvMessage;
-    var $dbConnectionError;
     var $iniSetMessage;
     var $memoryMessage;
     var $webRootFolderMessage;
@@ -119,14 +122,6 @@ class RequirementsChecker
     function checkCraft()
     {
         return $this->check(dirname(__FILE__).DIRECTORY_SEPARATOR.'requirements.php');
-    }
-
-    /**
-     * @return boolean Returns if we're running in the context of Craft or as a standalone PHP script.
-     */
-    function isCraftRunning()
-    {
-        return class_exists('Craft');
     }
 
     /**
@@ -377,47 +372,6 @@ class RequirementsChecker
     }
 
     /**
-     * @return boolean
-     */
-    function checkDatabaseCreds()
-    {
-        if ($this->isCraftRunning()) {
-            $dbConfig = Craft::$app->getConfig()->getDb();
-
-            // Check if we're running in the context of Craft.
-            $this->dbCreds['server'] = $dbConfig->server;
-            $this->dbCreds['user'] = $dbConfig->user;
-            $this->dbCreds['password'] = $dbConfig->password;
-            $this->dbCreds['database'] = $dbConfig->database;
-            $this->dbCreds['driver'] = $dbConfig->driver;
-            $this->dbCreds['port'] = $dbConfig->port;
-
-            return true;
-        }
-
-        // Check if we're running as a standalone script.
-        $dbConfigPath = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
-
-        if (!is_file($dbConfigPath)) {
-            return false;
-        }
-
-        $dbCreds = @require dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'db.php';
-
-        if (!is_array($dbCreds)) {
-            return false;
-        }
-
-        if (empty($dbCreds['server']) || empty($dbCreds['user']) || empty($dbCreds['database']) || empty($dbCreds['driver'])) {
-            return false;
-        }
-
-        $this->dbCreds = $dbCreds;
-
-        return true;
-    }
-
-    /**
      * Error-handler that mutes errors.
      */
     function muteErrorHandler()
@@ -425,75 +379,53 @@ class RequirementsChecker
     }
 
     /**
-     * Checks to see if the MySQL InnoDB storage engine is installed and enabled.
-     *
-     * @return boolean
-     */
-    function isInnoDbSupported()
-    {
-        if (($conn = $this->getDbConnection()) !== false) {
-            $results = $conn->query('SHOW ENGINES');
-
-            foreach ($results as $result) {
-                if (strtolower($result['Engine']) === 'innodb' && strtolower($result['Support']) !== 'no') {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return bool|mixed
-     * @throws Exception
-     */
-    function checkDatabaseServerVersion()
-    {
-        if (($conn = $this->getDbConnection()) !== false) {
-            switch ($this->dbCreds['driver']) {
-                case 'mysql':
-                    $requiredVersion = $this->requiredMySqlVersion;
-                    break;
-                case 'pgsql':
-                    $requiredVersion = $this->requiredPgSqlVersion;
-                    break;
-                default:
-                    throw new Exception('Unsupported connection type: '.$this->dbCreds['driver']);
-            }
-
-
-            return version_compare($conn->getAttribute(PDO::ATTR_SERVER_VERSION), $requiredVersion, '>=');
-        }
-
-        return false;
-    }
-
-    /**
-     * @return boolean|PDO
+     * @return PDO|false
      */
     function getDbConnection()
     {
         static $conn;
 
-        if (!$conn) {
+        if ($conn === null) {
             try {
-                $dsn = "{$this->dbCreds['driver']}:host={$this->dbCreds['server']};dbname={$this->dbCreds['database']}";
-
-                if (isset($this->dbCreds['port'])) {
-                    $dsn .= ";port={$this->dbCreds['port']}";
-                }
-
-                $conn = new PDO($dsn, $this->dbCreds['user'], $this->dbCreds['password']);
+                $conn = new PDO($this->dsn, $this->dbUser, $this->dbPassword);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
-                $this->dbConnectionError = "Can't connect to the database with the credentials supplied in db.php. Please double check them and try again.";
-
-                return false;
+                $conn = false;
             }
         }
 
         return $conn;
+    }
+
+    /**
+     * @param PDO    $conn
+     * @param string $requiredVersion
+     *
+     * @return bool|mixed
+     * @throws Exception
+     */
+    function checkDatabaseServerVersion($conn, $requiredVersion)
+    {
+        return version_compare($conn->getAttribute(PDO::ATTR_SERVER_VERSION), $requiredVersion, '>=');
+    }
+
+    /**
+     * Checks to see if the MySQL InnoDB storage engine is installed and enabled.
+     *
+     * @param PDO $conn
+     * @return boolean
+     */
+    function isInnoDbSupported($conn)
+    {
+        $results = $conn->query('SHOW ENGINES');
+
+        foreach ($results as $result) {
+            if (strtolower($result['Engine']) === 'innodb' && strtolower($result['Support']) !== 'no') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

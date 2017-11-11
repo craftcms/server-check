@@ -3,6 +3,7 @@
  * These are the default Craft requirements for [RequirementsChecker]] to use.
  */
 
+/** @var RequirementsChecker $this */
 $requirements = array(
     array(
         'name' => 'PHP 7.0+',
@@ -12,54 +13,9 @@ $requirements = array(
     ),
 );
 
-if ($this->checkDatabaseCreds()) {
-    switch ($this->dbCreds['driver']) {
-        case 'mysql':
-            if (extension_loaded('pdo') && extension_loaded('pdo_mysql')) {
-                $requirements[] = array(
-                    'name' => "MySQL {$this->requiredMySqlVersion}+",
-                    'mandatory' => true,
-                    'condition' => $this->checkDatabaseServerVersion(),
-                    'memo' => $this->dbConnectionError ? $this->dbConnectionError : 'MySQL '.$this->requiredMySqlVersion.' or higher is required to run Craft CMS.',
-                );
-            };
+$conn = $this->getDbConnection();
 
-            // If we know we already can't connect to the database, don't both running this one so we don't get double error messages.
-            if (!$this->dbConnectionError) {
-                $requirements[] = array(
-                    'name' => 'MySQL InnoDB support',
-                    'mandatory' => true,
-                    'condition' => $this->isInnoDbSupported(),
-                    'memo' => $this->dbConnectionError ? $this->dbConnectionError : 'Craft CMS requires the MySQL InnoDB storage engine to run.',
-                );
-            }
-            break;
-        case 'pgsql':
-            if (extension_loaded('pdo') && extension_loaded('pdo_pgsql')) {
-                $requirements[] = array(
-                    'name' => "PostgreSQL {$this->requiredPgSqlVersion}+",
-                    'mandatory' => true,
-                    'condition' => $this->checkDatabaseServerVersion(),
-                    'memo' => $this->dbConnectionError ? $this->dbConnectionError : 'PostgresSQL '.$this->requiredPgSqlVersion.' or higher is required to run Craft CMS.',
-                );
-            }
-            break;
-        default:
-            throw new Exception('Unsupported connection type: '.$this->dbCreds['driver']);
-    }
-}
-
-// Only run this requirement check if we're running in the context of Craft.
-if ($this->isCraftRunning()) {
-    $requirements[] = array(
-        'name' => 'Sensitive Craft folders should not be publicly accessible',
-        'mandatory' => false,
-        'condition' => $this->checkWebRoot(),
-        'memo' => $this->webRootFolderMessage,
-    );
-}
-
-switch ($this->dbCreds['driver']) {
+switch ($this->dbDriver) {
     case 'mysql':
         $requirements[] = array(
             'name' => 'PDO MySQL extension',
@@ -67,6 +23,20 @@ switch ($this->dbCreds['driver']) {
             'condition' => extension_loaded('pdo_mysql'),
             'memo' => 'The <http://php.net/manual/en/ref.pdo-mysql.php>PDO MySQL</a> extension is required.'
         );
+        if ($conn !== false) {
+            $requirements[] = array(
+                'name' => "MySQL {$this->requiredMySqlVersion}+",
+                'mandatory' => true,
+                'condition' => $this->checkDatabaseServerVersion($conn, $this->requiredMySqlVersion),
+                'memo' => "MySQL {$this->requiredMySqlVersion} or higher is required to run Craft CMS.",
+            );
+            $requirements[] = array(
+                'name' => 'MySQL InnoDB support',
+                'mandatory' => true,
+                'condition' => $this->isInnoDbSupported($conn),
+                'memo' => 'Craft CMS requires the MySQL InnoDB storage engine to run.',
+            );
+        }
         break;
     case 'pgsql':
         $requirements[] = array(
@@ -75,11 +45,26 @@ switch ($this->dbCreds['driver']) {
             'condition' => extension_loaded('pdo_pgsql'),
             'memo' => 'The <https://secure.php.net/manual/en/ref.pdo-pgsql.php>PDO PostgreSQL</a> extension is required.'
         );
+        if ($conn !== false) {
+            $requirements[] = array(
+                'name' => "PostgreSQL {$this->requiredPgSqlVersion}+",
+                'mandatory' => true,
+                'condition' => $this->checkDatabaseServerVersion($conn, $this->requiredPgSqlVersion),
+                'memo' => "PostgresSQL {$this->requiredPgSqlVersion} or higher is required to run Craft CMS.",
+            );
+        }
         break;
-    default:
-        throw new Exception('Unsupported connection type: '.$this->dbCreds['driver']);
 }
 
+// Only run this requirement check if we're running in the context of Craft.
+if (class_exists('Craft')) {
+    $requirements[] = array(
+        'name' => 'Sensitive Craft folders should not be publicly accessible',
+        'mandatory' => false,
+        'condition' => $this->checkWebRoot(),
+        'memo' => $this->webRootFolderMessage,
+    );
+}
 
 $requirements = array_merge($requirements, array(
     array(

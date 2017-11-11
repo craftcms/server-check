@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.1.0 - 2017-11-10
+
+### Changed
+- The requirements checker no longer attempts to parse a DB config file, and will only run DB requirement checks if a valid `dsn` is provided.
+- Lots of refactoring
+
 ## 1.0.17 - 2017-06-29
 
 ### Changed
