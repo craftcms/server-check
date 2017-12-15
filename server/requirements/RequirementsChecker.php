@@ -443,7 +443,7 @@ class RequirementsChecker
         // ini_set can return false or an empty string depending on your php version / FastCGI.
         // If ini_set has been disabled in php.ini, the value will be null because of our muted error handler
         if ($result === null) {
-            $this->iniSetMessage = 'It looks like <a href="http://php.net/manual/en/function.ini-set.php">ini_set</a> has been disabled in your php.ini file. Craft requires that to operate.';
+            $this->iniSetMessage = 'It looks like <a target="_blank" href="http://php.net/manual/en/function.ini-set.php">ini_set</a> has been disabled in your php.ini file. Craft requires that to operate.';
 
             return false;
         }
@@ -451,7 +451,7 @@ class RequirementsChecker
         // ini_set can return false or an empty string or the current value of memory_limit depending on your php
         // version and FastCGI. Regard, calling it didn't work, but there was no error.
         if ($result === false || $result === '' || $result === $newValue) {
-            $this->iniSetMessage = 'It appears calls to <a href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are not working for Craft. You may need to increase some settings in your php.ini file such as <a href="http://php.net/manual/en/ini.core.php#ini.memory-limit">memory_limit</a> and <a href="http://php.net/manual/en/info.configuration.php#ini.max-execution-time">max_execution_time</a> for long running operations like updating and asset transformations.';
+            $this->iniSetMessage = 'It appears calls to <a target="_blank" href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are not working for Craft. You may need to increase some settings in your php.ini file such as <a target="_blank" href="http://php.net/manual/en/ini.core.php#ini.memory-limit">memory_limit</a> and <a target="_blank" href="http://php.net/manual/en/info.configuration.php#ini.max-execution-time">max_execution_time</a> for long running operations like updating and asset transformations.';
 
             // Return true here so it's not a "fatal" error, but will be treated as a warning.
             return true;
@@ -462,7 +462,7 @@ class RequirementsChecker
         ini_set('memory_limit', $oldValue);
         restore_error_handler();
 
-        $this->iniSetMessage = 'Calls to <a href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are working correctly.';
+        $this->iniSetMessage = 'Calls to <a target="_blank" href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are working correctly.';
 
         return true;
     }
