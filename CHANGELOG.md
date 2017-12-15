@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.1.1 - 2017-12-15
+
+### Changed
+- Links within requirement descriptions now open in a new window. ([craftcms/cms#2205](https://github.com/craftcms/cms/issues/2205))
+
 ## 1.1.0 - 2017-11-10
 
 ### Changed
