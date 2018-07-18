@@ -115,8 +115,7 @@ $requirements = array_merge($requirements, array(
         'name' => 'Intl extension',
         'mandatory' => false,
         'condition' => $this->checkPhpExtensionVersion('intl', '1.0.2', '>='),
-        'memo' => 'The <a target="_blank" href="http://www.php.net/manual/en/book.intl.php">Intl</a> extension version 1.0.2 is highly '.
-            'recommended especially if you will be using any non-English languages for this Craft CMS installation.'
+        'memo' => 'The <a target="_blank" href="http://www.php.net/manual/en/book.intl.php">Intl</a> extension (version 1.0.2+) is recommended.'
     ),
     array(
         'name' => 'Fileinfo extension',
