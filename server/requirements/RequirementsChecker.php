@@ -48,7 +48,6 @@ class RequirementsChecker
     var $dbUser;
     var $dbPassword;
 
-    var $iconvMessage;
     var $result;
 
     var $requiredMySqlVersion = '5.5.0';
