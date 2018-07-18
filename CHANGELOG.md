@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## Unreleased
+## 1.1.2 - 2018-07-18
 
 ### Changed
 - The Fileinfo extension is now required, not recommended. ([#6](https://github.com/craftcms/server-check/issues/6))
