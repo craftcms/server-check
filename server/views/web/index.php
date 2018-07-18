@@ -7,22 +7,22 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8"/>
-	<title>Craft Requirements Checker</title>
+	<title>Craft CMS Requirement Checker</title>
 	<?php $this->renderViewFile(__DIR__.'/css.php'); ?>
 </head>
 <body>
 <div class="container">
 	<div class="header">
-		<h1>Craft Requirements Checker</h1>
+		<h1>Craft CMS Requirement Checker</h1>
 	</div>
 	<hr>
 
 	<div class="content">
 		<h3>Description</h3>
 		<p>
-			This script checks if your server configuration meets the requirements for running a Craft installation.
-			It checks if the server is running the right version of PHP, if appropriate PHP extensions have been loaded, and if php.ini file settings are correct.
-			If database credentials are supplied in db.php, the script will also performs some database checks as well.
+			This script checks if your server configuration meets the requirements for running a Craft CMS installation.
+            It checks if the server is running the right version of PHP, if appropriate PHP extensions have been loaded, and if <code>php.ini</code> file settings are correct.
+			If database credentials are supplied in <code>db.php</code>, the script will also performs some database checks as well.
 		</p>
 		<p>
 			There are two kinds of requirements being checked. Mandatory requirements are those that have to be met

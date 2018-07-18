@@ -3,9 +3,9 @@
 /* @var $summary array */
 /* @var $requirements array[] */
 
-echo "\nCraft Server Requirement Checker\n\n";
+echo "\nCraft CMS Requirement Checker\n\n";
 
-echo "This script checks if your server configuration meets the requirements for running a Craft installation.\n";
+echo "This script checks if your server configuration meets the requirements for running a Craft CMS installation.\n";
 echo "It checks if the server is running the right version of PHP, if appropriate PHP extensions have been loaded,\n";
 echo "and if php.ini file settings are correct.\n\n";
 echo "If database credentials are supplied in db.php, the script will also performs some database checks as well.\n";
