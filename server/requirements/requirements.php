@@ -148,6 +148,12 @@ $requirements = array_merge($requirements, array(
         'condition' => extension_loaded('zip'),
         'memo' => 'The <a target="_blank" href="https://secure.php.net/manual/en/book.zip.php">zip</a> extension is required for zip and unzip operations.',
     ),
+    array(
+        'name' => 'JSON extension',
+        'mandatory' => true,
+        'condition' => extension_loaded('json'),
+        'memo' => 'The <a target="_blank" href="https://secure.php.net/manual/en/book.json.php">JSON</a> extension is required for JSON encoding and decoding.',
+    ),
 ));
 
 return $requirements;

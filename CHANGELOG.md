@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## Unreleased
+
+### Changed
+- The JSON extension is now required. ([#7](https://github.com/craftcms/server-check/issues/7))
+
 ## 1.1.2 - 2018-07-18
 
 ### Changed
