@@ -130,11 +130,9 @@ $requirements = array_merge($requirements, array(
     ),
     array(
         'name' => 'Fileinfo extension',
-        'mandatory' => false,
+        'mandatory' => true,
         'condition' => extension_loaded('fileinfo'),
-        'memo' => 'The <a target="_blank" href="http://php.net/manual/en/book.fileinfo.php">Fileinfo</a> extension is recommended for more accurate '.
-            'mime-type detection for uploaded files. If it is not available a Craft CMS will fall back to determining the mime-type '.
-            'by the file extension.'
+        'memo' => 'The <a target="_blank" href="http://php.net/manual/en/book.fileinfo.php">Fileinfo</a> extension required.'
     ),
     array(
         'name' => 'DOM extension',
