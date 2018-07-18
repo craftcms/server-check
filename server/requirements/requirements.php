@@ -147,18 +147,6 @@ $requirements = array_merge($requirements, array(
         'memo' => '<a target="_blank" href="http://php.net/manual/en/book.iconv.php">iconv</a> is recommended for more robust character set conversion support.',
     ),
     array(
-        'name' => 'Max Upload File Size',
-        'mandatory' => false,
-        'condition' => true,
-        'memo' => 'upload_max_filesize is set to '.ini_get('upload_max_filesize').'.',
-    ),
-    array(
-        'name' => 'Max POST Size',
-        'mandatory' => false,
-        'condition' => true,
-        'memo' => 'post_max_size is set to '.ini_get('post_max_size').'.',
-    ),
-    array(
         'name' => 'Memory Limit',
         'mandatory' => false,
         'condition' => $this->checkMemory(),
