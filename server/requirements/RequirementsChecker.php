@@ -49,7 +49,6 @@ class RequirementsChecker
     var $dbPassword;
 
     var $iconvMessage;
-    var $iniSetMessage;
     var $memoryMessage;
     var $result;
 
@@ -430,42 +429,45 @@ class RequirementsChecker
     }
 
     /**
-     * @return boolean
+     * @return array
      */
-    function checkIniSet()
+    function iniSetRequirement()
     {
         $oldValue = ini_get('memory_limit');
-
         set_error_handler(array($this, 'muteErrorHandler'));
         $result = ini_set('memory_limit', '442M');
         $newValue = ini_get('memory_limit');
+        ini_set('memory_limit', $oldValue);
         restore_error_handler();
+
+        $mandatory = true;
 
         // ini_set can return false or an empty string depending on your php version / FastCGI.
         // If ini_set has been disabled in php.ini, the value will be null because of our muted error handler
         if ($result === null) {
-            $this->iniSetMessage = 'It looks like <a target="_blank" href="http://php.net/manual/en/function.ini-set.php">ini_set</a> has been disabled in your php.ini file. Craft requires that to operate.';
-
-            return false;
+            $memo = 'It looks like <a target="_blank" href="http://php.net/manual/en/function.ini-set.php">ini_set</a> has been disabled in your <code>php.ini</code> file. Craft requires that to operate.';
+            $condition = false;
         }
 
         // ini_set can return false or an empty string or the current value of memory_limit depending on your php
         // version and FastCGI. Regard, calling it didn't work, but there was no error.
-        if ($result === false || $result === '' || $result === $newValue) {
-            $this->iniSetMessage = 'It appears calls to <a target="_blank" href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are not working for Craft. You may need to increase some settings in your php.ini file such as <a target="_blank" href="http://php.net/manual/en/ini.core.php#ini.memory-limit">memory_limit</a> and <a target="_blank" href="http://php.net/manual/en/info.configuration.php#ini.max-execution-time">max_execution_time</a> for long running operations like updating and asset transformations.';
+        else if ($result === false || $result === '' || $result === $newValue) {
+            $memo = 'It appears calls to <a target="_blank" href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are not working for Craft. You may need to increase some settings in your php.ini file such as <a target="_blank" href="http://php.net/manual/en/ini.core.php#ini.memory-limit">memory_limit</a> and <a target="_blank" href="http://php.net/manual/en/info.configuration.php#ini.max-execution-time">max_execution_time</a> for long running operations like updating and asset transformations.';
 
-            // Return true here so it's not a "fatal" error, but will be treated as a warning.
-            return true;
+            // Set mandatory to false here so it's not a "fatal" error, but will be treated as a warning.
+            $mandatory = false;
+            $condition = false;
+        } else {
+            $memo = 'Calls to <a target="_blank" href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are working correctly.';
+            $condition = true;
         }
 
-        // Resetting should work, but might as well be extra careful.
-        set_error_handler(array($this, 'muteErrorHandler'));
-        ini_set('memory_limit', $oldValue);
-        restore_error_handler();
-
-        $this->iniSetMessage = 'Calls to <a target="_blank" href="http://php.net/manual/en/function.ini-set.php">ini_set</a> are working correctly.';
-
-        return true;
+        return array(
+            'name' => 'ini_set calls',
+            'mandatory' => $mandatory,
+            'condition' => $condition,
+            'memo' => $memo,
+        );
     }
 
     /**

@@ -110,12 +110,7 @@ $requirements = array_merge($requirements, array(
         'condition' => extension_loaded('curl'),
         'memo' => 'The <a target="_blank" href="http://php.net/manual/en/book.curl.php">cURL</a> extension is required.',
     ),
-    array(
-        'name' => 'ini_set calls',
-        'mandatory' => true,
-        'condition' => $this->checkIniSet(),
-        'memo' => $this->iniSetMessage,
-    ),
+    $this->iniSetRequirement(),
     array(
         'name' => 'Intl extension',
         'mandatory' => false,
