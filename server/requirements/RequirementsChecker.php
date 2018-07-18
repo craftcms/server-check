@@ -66,7 +66,7 @@ class RequirementsChecker
      *                                   requirements. If a string, it is treated as the path of the file, which
      *                                   contains the requirements;
      *
-     * @return static The instance of the class.
+     * @return static self reference
      */
     function check($requirements)
     {
@@ -117,7 +117,7 @@ class RequirementsChecker
     /**
      * Performs the check for the Craft core requirements.
      *
-     * @return RequirementsChecker The instance of the class.
+     * @return static self reference
      */
     function checkCraft()
     {
@@ -127,7 +127,7 @@ class RequirementsChecker
     /**
      * Return the check results.
      *
-     * @return array|null check results in format:
+     * The results will be returned in this format:
      *
      * ```php
      * array(
@@ -146,6 +146,8 @@ class RequirementsChecker
      *     ),
      * )
      * ```
+     *
+     * @return array|null The check results
      */
     function getResult()
     {
@@ -183,7 +185,7 @@ class RequirementsChecker
      * @param string $version       The required PHP extension version.
      * @param string $compare       The comparison operator, by default '>='.
      *
-     * @return boolean If the PHP extension version matches or not.
+     * @return bool Whether the PHP extension version matches
      */
     function checkPhpExtensionVersion($extensionName, $version, $compare = '>=')
     {
@@ -209,7 +211,7 @@ class RequirementsChecker
      *
      * @param string $name The configuration option name.
      *
-     * @return boolean If the option is on or not.
+     * @return bool Whether the option is on
      */
     function checkPhpIniOn($name)
     {
@@ -227,7 +229,7 @@ class RequirementsChecker
      *
      * @param string $name The configuration option name.
      *
-     * @return boolean If the option is off or not.
+     * @return bool Whether the option is off
      */
     function checkPhpIniOff($name)
     {
@@ -245,7 +247,7 @@ class RequirementsChecker
      *
      * @param string $value The verbose size representation.
      *
-     * @return integer The actual size in bytes.
+     * @return int|float The actual size in bytes
      */
     function getByteSize($value)
     {
@@ -280,7 +282,7 @@ class RequirementsChecker
      * @param array   $_data_     The data to be extracted and made available to the view file.
      * @param boolean $_return_   Whether the rendering result should be returned as a string.
      *
-     * @return string The rendering result. Null if the rendering result is not required.
+     * @return string|null The rendering result, or `null` if the rendering result is not required
      */
     function renderViewFile($_viewFile_, $_data_ = null, $_return_ = false)
     {
@@ -309,7 +311,7 @@ class RequirementsChecker
      * @param array   $requirement    The raw requirement.
      * @param integer $requirementKey The requirement key in the list.
      *
-     * @return array normalized requirement.
+     * @return array The normalized requirement
      */
     function normalizeRequirement($requirement, $requirementKey = 0)
     {
@@ -354,7 +356,7 @@ class RequirementsChecker
     /**
      * Returns the server information.
      *
-     * @return string The server information.
+     * @return string The server information
      */
     function getServerInfo()
     {
@@ -364,7 +366,7 @@ class RequirementsChecker
     /**
      * Returns the current date if possible in string representation.
      *
-     * @return string The current date.
+     * @return string The current date
      */
     function getCurrentDate()
     {
@@ -401,7 +403,7 @@ class RequirementsChecker
      * @param PDO    $conn
      * @param string $requiredVersion
      *
-     * @return bool|mixed
+     * @return bool
      * @throws Exception
      */
     function checkDatabaseServerVersion($conn, $requiredVersion)
@@ -413,7 +415,7 @@ class RequirementsChecker
      * Checks to see if the MySQL InnoDB storage engine is installed and enabled.
      *
      * @param PDO $conn
-     * @return boolean
+     * @return bool
      */
     function isInnoDbSupported($conn)
     {
@@ -550,7 +552,7 @@ class RequirementsChecker
     /**
      * @param string $pathToTest
      *
-     * @return boolean
+     * @return bool
      */
     function isPathInsideWebroot($pathToTest)
     {
