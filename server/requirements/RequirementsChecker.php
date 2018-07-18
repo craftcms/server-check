@@ -51,7 +51,6 @@ class RequirementsChecker
     var $iconvMessage;
     var $iniSetMessage;
     var $memoryMessage;
-    var $webRootFolderMessage;
     var $result;
 
     var $requiredMySqlVersion = '5.5.0';
@@ -483,70 +482,63 @@ class RequirementsChecker
     }
 
     /**
-     * @return boolean
+     * @return array
      */
-    function checkWebRoot()
+    function webrootRequirement()
     {
         $pathService = Craft::$app->getPath();
-        $publicFolders = array();
-
-        // The paths to check.
         $folders = array(
-            'storage' => $pathService->getStoragePath(),
             'config' => $pathService->getConfigPath(),
+            'storage' => $pathService->getStoragePath(),
             'templates' => $pathService->getSiteTemplatesPath(),
             'translations' => $pathService->getSiteTranslationsPath(),
+            'vendor' => $pathService->getVendorPath(),
         );
 
+        // figure out which ones are public
+        $publicFolders = array();
         foreach ($folders as $key => $path) {
-            if ($path && $realPath = realpath($path)) {
-                $folders[$key] = $this->isPathInsideWebroot($realPath);
-            } else {
-                $folders[$key] = false;
-            }
-        }
-
-        foreach ($folders as $key => $result) {
-
-            // We were able to connect to one of our exposed folder checks.
-            if ($result === true) {
+            if (
+                $path &&
+                ($realPath = realpath($path)) &&
+                $this->isPathInsideWebroot($realPath)
+            ) {
                 $publicFolders[] = $key;
             }
         }
 
-        $totalPublicFolders = count($publicFolders);
-
-        if ($totalPublicFolders > 0) {
+        if ($condition = empty($publicFolders)) {
+            $memo = 'All of your Craft folders appear to be above your web root.';
+        } else {
+            $total = count($publicFolders);
             $folderString = '';
 
-            for ($counter = 0; $counter < $totalPublicFolders; $counter++) {
-                $folderString .= '“craft/'.$publicFolders[$counter].'”';
-
-                if (isset($publicFolders[$counter + 1]) && $totalPublicFolders > 2) {
+            foreach ($publicFolders as $i => $folder) {
+                if ($total >= 3 && $i > 0) {
                     $folderString .= ', ';
-                }
-
-                if (isset($publicFolders[$counter + 1]) && $counter + 2 === $totalPublicFolders) {
-                    if ($totalPublicFolders === 2) {
-                        $folderString .= ' and ';
-                    } else {
+                    if ($i === $total - 2) {
                         $folderString .= 'and ';
                     }
+                } else if ($total === 2 && $i === 1) {
+                    $folderString .= ' and ';
                 }
+
+                $folderString .= "<code>{$folder}/</code>";
             }
 
-            if ($totalPublicFolders > 1) {
-                $folderString .= ' folders';
+            if ($total > 1) {
+                $memo = "Your {$folderString} folders appear to be publicly accessible, which is a security risk. They should be moved above your web root.";
             } else {
-                $folderString .= ' folder';
+                $memo = "Your {$folderString} folder appears to be publicly accessible, which is a security risk. It should be moved above your web root.";
             }
-
-            $this->webRootFolderMessage = 'Your Craft CMS '.$folderString.' appear to be publicly accessible which is a security risk. You should strongly consider moving them above your web root or blocking access to them via .htaccess or web.config files.';
-
-            return false;
         }
 
-        return true;
+        return array(
+            'name' => 'Sensitive folders should not be publicly accessible',
+            'mandatory' => false,
+            'condition' => $condition,
+            'memo' => $memo,
+        );
     }
 
     /**

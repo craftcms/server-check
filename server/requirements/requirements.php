@@ -58,12 +58,7 @@ switch ($this->dbDriver) {
 
 // Only run this requirement check if we're running in the context of Craft.
 if (class_exists('Craft')) {
-    $requirements[] = array(
-        'name' => 'Sensitive Craft folders should not be publicly accessible',
-        'mandatory' => false,
-        'condition' => $this->checkWebRoot(),
-        'memo' => $this->webRootFolderMessage,
-    );
+    $requirements[] = $this->webrootRequirement();
 }
 
 $requirements = array_merge($requirements, array(
