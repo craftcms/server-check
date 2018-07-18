@@ -475,32 +475,9 @@ class RequirementsChecker
     function checkMemory()
     {
         $memoryLimit = ini_get('memory_limit');
-        $memoryLimitInBytes = $this->getByteSize($memoryLimit);
-
-        // -1 == no limit
-        if ($memoryLimitInBytes === -1) {
-            $this->memoryMessage = 'Your PHP configuration does not impose a memory limit.';
-
-            return true;
-        }
-
-        // 32M check
-        if ($memoryLimitInBytes <= 33554432) {
-            $this->memoryMessage = 'Craft CMS requires at least 32M of memory allocated to PHP to operate smoothly.';
-
-            return false;
-        }
-
-        // 128M check
-        if ($memoryLimitInBytes <= 134217728) {
-            $this->memoryMessage = 'You have 128M allocated to PHP which should be fine for most sites. If you will be processing very large images or having Craft CMS automatically backup a large database, you might need to increase this to 256M or higher.';
-
-            return false;
-        }
-
-        $this->memoryMessage = 'There is '.$memoryLimit.' of memory allocated to PHP.';
-
-        return true;
+        $bytes = $this->getByteSize($memoryLimit);
+        $this->memoryMessage = "Craft requires a minimum PHP memory limit of 32M, and at least 256M is recommended. The memory_limit directive in php.ini is currently set to {$memoryLimit}" . ($memoryLimit === -1 ? ' (no limit)' : '') . '.';
+        return $bytes === -1 || $bytes >= 268435456;
     }
 
     /**

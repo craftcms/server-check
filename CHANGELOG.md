@@ -5,6 +5,7 @@ Changelog
 
 ### Changed
 - The Fileinfo extension is now required, not recommended. ([#6](https://github.com/craftcms/server-check/issues/6))
+- Improved the Memory Limit requirement message. ([#5](https://github.com/craftcms/server-check/issues/5))
 
 ## 1.1.1 - 2017-12-15
 
