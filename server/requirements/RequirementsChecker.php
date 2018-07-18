@@ -49,7 +49,6 @@ class RequirementsChecker
     var $dbPassword;
 
     var $iconvMessage;
-    var $memoryMessage;
     var $result;
 
     var $requiredMySqlVersion = '5.5.0';
@@ -471,16 +470,24 @@ class RequirementsChecker
     }
 
     /**
-     * @return boolean
+     * @return array
      *
      * @see http://php.net/manual/en/ini.core.php#ini.memory-limit
      */
-    function checkMemory()
+    function memoryLimitRequirement()
     {
         $memoryLimit = ini_get('memory_limit');
         $bytes = $this->getByteSize($memoryLimit);
-        $this->memoryMessage = "Craft requires a minimum PHP memory limit of 32M, and at least 256M is recommended. The memory_limit directive in php.ini is currently set to {$memoryLimit}" . ($memoryLimit === -1 ? ' (no limit)' : '') . '.';
-        return $bytes === -1 || $bytes >= 268435456;
+
+        $memoLimit = $memoryLimit . ($memoryLimit === -1 ? ' (no limit)' : '');
+        $memo = "Craft requires a minimum PHP memory limit of 32M, and at least 256M is recommended. The memory_limit directive in php.ini is currently set to {$memoLimit}.";
+
+        return array(
+            'name' => 'Memory Limit',
+            'mandatory' => false,
+            'condition' => $bytes === -1 || $bytes >= 268435456,
+            'memo' => $memo,
+        );
     }
 
     /**
