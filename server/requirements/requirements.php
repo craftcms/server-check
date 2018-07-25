@@ -154,6 +154,30 @@ $requirements = array_merge($requirements, array(
         'condition' => extension_loaded('json'),
         'memo' => 'The <a target="_blank" href="https://secure.php.net/manual/en/book.json.php">JSON</a> extension is required for JSON encoding and decoding.',
     ),
+    array(
+        'name' => 'proc_open()',
+        'mandatory' => false,
+        'condition' => function_exists('proc_open'),
+        'memo' => 'The <a target="_blank" href="https://secure.php.net/manual/en/function.proc-open.php">proc_open()</a> function is required for Plugin Store operations as well as sending emails.',
+    ),
+    array(
+        'name' => 'proc_get_status()',
+        'mandatory' => false,
+        'condition' => function_exists('proc_get_status'),
+        'memo' => 'The <a target="_blank" href="https://secure.php.net/manual/en/function.proc-get-status.php">proc_get_status()</a> function is required for Plugin Store operations as well as sending emails.',
+    ),
+    array(
+        'name' => 'proc_close()',
+        'mandatory' => false,
+        'condition' => function_exists('proc_close'),
+        'memo' => 'The <a target="_blank" href="https://secure.php.net/manual/en/function.proc_close.php">proc_close()</a> function is required for Plugin Store operations as well as sending emails.',
+    ),
+    array(
+        'name' => 'proc_terminate()',
+        'mandatory' => false,
+        'condition' => function_exists('proc_terminate'),
+        'memo' => 'The <a target="_blank" href="https://secure.php.net/manual/en/function.proc_terminate.php">proc_terminate()</a> function is required for Plugin Store operations as well as sending emails.',
+    ),
 ));
 
 return $requirements;

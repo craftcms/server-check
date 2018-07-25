@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## Unreleased
+
+### Changed
+- Added `proc_open`, `proc_close`, `proc_terminate`, and `proc_get_status` methods as optional.
+
 ## 1.1.3 - 2018-07-18
 
 ### Changed
