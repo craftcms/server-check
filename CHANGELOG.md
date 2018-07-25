@@ -5,6 +5,7 @@ Changelog
 
 ### Changed
 - Added `proc_open`, `proc_close`, `proc_terminate`, and `proc_get_status` methods as optional.
+- `allow_url_fopen` is now checked to see if it is enabled for Plugin Store and updating operations.
 
 ## 1.1.3 - 2018-07-18
 

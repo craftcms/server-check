@@ -178,6 +178,12 @@ $requirements = array_merge($requirements, array(
         'condition' => function_exists('proc_terminate'),
         'memo' => 'The <a target="_blank" href="https://secure.php.net/manual/en/function.proc_terminate.php">proc_terminate()</a> function is required for Plugin Store operations as well as sending emails.',
     ),
+    array(
+        'name' => 'allow_url_fopen',
+        'mandatory' => false,
+        'condition' => ini_get('allow_url_fopen'),
+        'memo' => '<a target="_blank" href="https://secure.php.net/manual/en/filesystem.configuration.php#ini.allow-url-fopen">allow_url_fopen</a> must be enabled in your PHP configuration for Plugin Store and updating operations.',
+    ),
 ));
 
 return $requirements;
