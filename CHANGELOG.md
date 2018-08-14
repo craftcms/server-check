@@ -1,7 +1,9 @@
 Changelog
 =========
 
-## Unchanged
+## 1.1.5 - 2018-08-14
+
+### Changed
 - The `iconv` extension is now required because of Twig 2.0.
 
 ## 1.1.4 - 2018-07-25
