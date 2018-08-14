@@ -131,9 +131,9 @@ $requirements = array_merge($requirements, array(
     ),
     array(
         'name' => 'iconv extension',
-        'mandatory' => false,
+        'mandatory' => true,
         'condition' => function_exists('iconv'),
-        'memo' => '<a target="_blank" href="http://php.net/manual/en/book.iconv.php">iconv</a> is recommended for more robust character set conversion support.',
+        'memo' => '<a target="_blank" href="http://php.net/manual/en/book.iconv.php">iconv</a> is required for more robust character set conversion support.',
     ),
     $this->memoryLimitRequirement(),
     array(
