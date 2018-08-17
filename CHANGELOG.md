@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## Unreleased
+
+### Changed
+- The `ctype` extension is now required because of Yii 2.x.
+
 ## 1.1.5 - 2018-08-14
 
 ### Changed

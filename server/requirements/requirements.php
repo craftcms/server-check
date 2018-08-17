@@ -110,6 +110,12 @@ $requirements = array_merge($requirements, array(
         'condition' => extension_loaded('curl'),
         'memo' => 'The <a target="_blank" href="http://php.net/manual/en/book.curl.php">cURL</a> extension is required.',
     ),
+    array(
+        'name' => 'ctype extension',
+        'mandatory' => true,
+        'condition' => extension_loaded('ctype'),
+        'memo' => 'The <a target="_blank" href="https://secure.php.net/manual/en/book.ctype.php">ctype</a> extension is required.',
+    ),
     $this->iniSetRequirement(),
     array(
         'name' => 'Intl extension',
