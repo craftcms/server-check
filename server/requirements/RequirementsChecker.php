@@ -432,8 +432,16 @@ class RequirementsChecker
     function iniSetRequirement()
     {
         $oldValue = ini_get('memory_limit');
+
+        $setValue = '442M'; // A random PHP memory limit value.
+        if ($oldValue !== '-1'){
+            // When the old value is not equal to '-1', add 1MB to the limit set at the moment.
+            $bytes = $this->getByteSize($oldValue) + $this->getByteSize('1M');
+            $setValue = sprintf('%sM', $bytes / 1024 ** 2);
+        }
+
         set_error_handler(array($this, 'muteErrorHandler'));
-        $result = ini_set('memory_limit', '442M');
+        $result = ini_set('memory_limit', $setValue);
         $newValue = ini_get('memory_limit');
         ini_set('memory_limit', $oldValue);
         restore_error_handler();
