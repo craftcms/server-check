@@ -437,7 +437,7 @@ class RequirementsChecker
         if ($oldValue !== '-1'){
             // When the old value is not equal to '-1', add 1MB to the limit set at the moment.
             $bytes = $this->getByteSize($oldValue) + $this->getByteSize('1M');
-            $setValue = sprintf('%sM', $bytes / 1024 ** 2);
+            $setValue = sprintf('%sM', $bytes / (1024 * 1024));
         }
 
         set_error_handler(array($this, 'muteErrorHandler'));
