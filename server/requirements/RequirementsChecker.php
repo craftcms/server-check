@@ -487,7 +487,7 @@ class RequirementsChecker
         $bytes = $this->getByteSize($memoryLimit);
 
         $memoLimit = $memoryLimit . ($memoryLimit === -1 ? ' (no limit)' : '');
-        $memo = "Craft requires a minimum PHP memory limit of 32M, and at least 256M is recommended. The memory_limit directive in php.ini is currently set to {$memoLimit}.";
+        $memo = "Craft requires a minimum PHP memory limit of 256M. The memory_limit directive in php.ini is currently set to {$memoLimit}.";
 
         return array(
             'name' => 'Memory Limit',
