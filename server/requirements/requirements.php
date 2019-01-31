@@ -142,6 +142,7 @@ $requirements = array_merge($requirements, array(
         'memo' => '<a rel="noopener" target="_blank" href="http://php.net/manual/en/book.iconv.php">iconv</a> is required for more robust character set conversion support.',
     ),
     $this->memoryLimitRequirement(),
+    $this->maxExecutionTimeRequirement(),
     array(
         'name' => 'password_hash()',
         'mandatory' => true,

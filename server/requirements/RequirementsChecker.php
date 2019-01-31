@@ -499,6 +499,26 @@ class RequirementsChecker
 
     /**
      * @return array
+     *
+     * @see http://php.net/manual/en/info.configuration.php#ini.max-execution-time
+     */
+    function maxExecutionTimeRequirement()
+    {
+        $maxExecutionTime = (int)trim(ini_get('max_execution_time'));
+
+        $humanTime = $maxExecutionTime . ($maxExecutionTime === 0 ? ' (no limit)' : '');
+        $memo = "Craft requires a minimum PHP max execution time of 120 seconds. The max_execution_time directive in php.ini is currently set to {$humanTime}.";
+
+        return array(
+            'name' => 'Max Execution Time',
+            'mandatory' => false,
+            'condition' => $maxExecutionTime === 0 || $maxExecutionTime >= 120,
+            'memo' => $memo,
+        );
+    }
+
+    /**
+     * @return array
      */
     function webrootRequirement()
     {
