@@ -95,7 +95,7 @@ $requirements = array_merge($requirements, array(
     array(
         'name' => 'GD extension or ImageMagick extension',
         'mandatory' => true,
-        'condition' => extension_loaded('gd') || extension_loaded('imagick'),
+        'condition' => extension_loaded('gd') || (extension_loaded('imagick') && !empty(\Imagick::queryFormats())),
         'memo' => 'The <a rel="noopener" target="_blank" href="http://php.net/manual/en/book.image.php">GD</a> or <a rel="noopener" target="_blank" href="http://php.net/manual/en/book.imagick.php">ImageMagick</a> extension is required, however ImageMagick is recommended as it adds animated GIF support, and preserves 8-bit and 24-bit PNGs during image transforms.'
     ),
     array(
