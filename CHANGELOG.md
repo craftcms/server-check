@@ -1,5 +1,10 @@
 # Changelog for Craft CMS Server Check
 
+## 1.1.8 - 2020-01-17
+
+### Changed
+- Changed the image extension check to make sure that if Imagick is installed, it can actually process images.
+
 ## 1.1.7 - 2019-01-31
 
 ### Added
