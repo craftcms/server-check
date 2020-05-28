@@ -1,6 +1,6 @@
 # Changelog for Craft CMS Server Check
 
-## Unreleased
+## 1.1.9 - 2020-05-28
 
 ### Added
 - Added `ignore_user_abort` as an optional method. 
