@@ -6,10 +6,10 @@
 /** @var RequirementsChecker $this */
 $requirements = array(
     array(
-        'name' => 'PHP 7.0+',
+        'name' => 'PHP 7.2.5+',
         'mandatory' => true,
-        'condition' => version_compare(PHP_VERSION, '7.0.0', '>='),
-        'memo' => 'PHP 7.0 or higher is required.',
+        'condition' => PHP_VERSION_ID >= 70205,
+        'memo' => 'PHP 7.2.5 or later is required.',
     ),
 );
 
