@@ -50,7 +50,7 @@ class RequirementsChecker
 
     var $result;
 
-    var $requiredMySqlVersion = '5.5.0';
+    var $requiredMySqlVersion = '5.7.8';
     var $requiredPgSqlVersion = '9.5';
 
     /**
