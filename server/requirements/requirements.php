@@ -21,7 +21,7 @@ switch ($this->dbDriver) {
             'name' => 'PDO MySQL extension',
             'mandatory' => true,
             'condition' => extension_loaded('pdo_mysql'),
-            'memo' => 'The <http://php.net/manual/en/ref.pdo-mysql.php>PDO MySQL</a> extension is required.'
+            'memo' => 'The <a rel="noopener" target="_blank" href="http://php.net/manual/en/ref.pdo-mysql.php">PDO MySQL</a> extension is required.'
         );
         if ($conn !== false) {
             $requirements[] = array(
@@ -36,6 +36,12 @@ switch ($this->dbDriver) {
                 'condition' => $this->isInnoDbSupported($conn),
                 'memo' => 'Craft CMS requires the MySQL InnoDB storage engine to run.',
             );
+            $requirements[] = array(
+                'name' => 'MySQL timezone support',
+                'mandatory' => false,
+                'condition' => $this->validateDatabaseTimezoneSupport($conn),
+                'memo' => 'MySQL should be configured with <a rel="noopener" target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html">full timezone support</a>.',
+            );
         }
         break;
     case 'pgsql':
@@ -43,7 +49,7 @@ switch ($this->dbDriver) {
             'name' => 'PDO PostgreSQL extension',
             'mandatory' => true,
             'condition' => extension_loaded('pdo_pgsql'),
-            'memo' => 'The <https://secure.php.net/manual/en/ref.pdo-pgsql.php>PDO PostgreSQL</a> extension is required.'
+            'memo' => 'The <a rel="noopener" target="_blank" href="https://secure.php.net/manual/en/ref.pdo-pgsql.php">PDO PostgreSQL</a> extension is required.'
         );
         if ($conn !== false) {
             $requirements[] = array(

@@ -427,6 +427,27 @@ class RequirementsChecker
     }
 
     /**
+     * This method attempts to see if MySQL timezone data has been populated on
+     * the MySQL server Craft is configured to use.
+     *
+     * https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html
+     *
+     * @param PDO $conn
+     * @return bool
+     */
+    function validateDatabaseTimezoneSupport($conn)
+    {
+        $query = $conn->query("SELECT CONVERT_TZ('2007-03-11 2:00:00','US/Eastern','US/Central') AS time1");
+        $result = $query->fetchColumn();
+
+        if (!$result) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @return array
      */
     function iniSetRequirement()

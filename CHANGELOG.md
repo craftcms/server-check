@@ -1,5 +1,10 @@
 # Changelog for Craft CMS Server Check
 
+## Unreleased
+
+### Added
+- Added a check for MySQL to see if the server has been configured with full timezone support.
+
 ## 1.1.9 - 2020-05-28
 
 ### Added
