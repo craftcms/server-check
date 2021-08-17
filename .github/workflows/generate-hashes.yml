@@ -7,9 +7,6 @@ on:
       - "*.*.*"
 
 jobs:
-    runs-on: ubuntu-latest
-
-jobs:
   generate_release:
     name: Generate release
     steps:
