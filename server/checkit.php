@@ -13,8 +13,7 @@ $checker->checkCraft()->render();
 $args = isset($_SERVER['argv']) ? $_SERVER['argv'] : [];
 $strict = in_array('--strict', $args);
 
-if ($checker->result['summary']['errors'] || ($strict && $checker->result['summary']['warnings'])
-) {
+if ($checker->result['summary']['errors'] || ($strict && $checker->result['summary']['warnings'])) {
     exit(1);
 }
 
