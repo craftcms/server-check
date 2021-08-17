@@ -1,8 +1,6 @@
 name: Generate Release
 on:
   push:
-    branches:
-      - feature/dev-83-provide-shell-one-liner-for
     tags:
       - "*.*.*"
 
@@ -14,17 +12,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: MCJack123/ghaction-generate-release-hashes@v1
-        with:
-          hash-type: sha256
-          file-name: hashes.txt
+    - name: Archive release
+      uses: thedoctor0/zip-release@master
+      with:
+        type: tar
+        path: ./server
+        filename: 'release.tar.gz'
+        exclusions: '*.git*'
 
-      # - uses: actions/upload-artifact@v2
-      #   with:
-      #     name: Asset Hashes
-      #     path: hashes.txt
+    - name: Generate SHA256
+      run: sha256sum -b release.tar.gz > sha256sum.txt
 
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: hashes.txt
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files:
+          - sha256sum.txt
+          - 'release.tar.gz'
