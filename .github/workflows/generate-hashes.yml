@@ -1,21 +1,27 @@
 name: Generate hashes for relase
 on:
-  release:
-    types: [created, edited]
   push:
     branches:
       - feature/dev-83-provide-shell-one-liner-for
+    tags:
+      - "*.*.*"
+
 jobs:
-  - name: Checkout
-    uses: actions/checkout@v2
-  - uses: MCJack123/ghaction-generate-release-hashes@v1
-    with:
-      hash-type: sha256
-      file-name: hashes.txt
-  # - uses: actions/upload-artifact@v2
-  #   with:
-  #     name: Asset Hashes
-  #     path: hashes.txt
-  - uses: softprops/action-gh-release@v1
-    with:
-      files: hashes.txt
+  generate_release:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - uses: MCJack123/ghaction-generate-release-hashes@v1
+      with:
+        hash-type: sha256
+        file-name: hashes.txt
+
+    # - uses: actions/upload-artifact@v2
+    #   with:
+    #     name: Asset Hashes
+    #     path: hashes.txt
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: hashes.txt
