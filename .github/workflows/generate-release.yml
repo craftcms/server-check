@@ -17,8 +17,8 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: tar
-          path: ./server
-          filename: 'release.tar.gz'
+          directory: ./server
+          filename: ../craftcms-server-check.tar.gz
           exclusions: '*.git*'
 
       - name: Generate SHA256
@@ -29,4 +29,4 @@ jobs:
         with:
           files: |
             sha256sum.txt
-            release.tar.gz
+            craftcms-server-check.tar.gz
