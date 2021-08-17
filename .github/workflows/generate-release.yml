@@ -22,7 +22,7 @@ jobs:
           exclusions: '*.git*'
 
       - name: Generate SHA256
-        run: sha256sum -b release.tar.gz > sha256sum.txt
+        run: sha256sum -b craftcms-server-check.tar.gz > sha256sum.txt
 
       - name: Release
         uses: softprops/action-gh-release@v1
