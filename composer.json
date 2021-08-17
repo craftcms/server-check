@@ -17,9 +17,6 @@
     "rss": "https://github.com/craftcms/server-check/releases.atom"
   },
   "license": "MIT",
-  "bin": [
-    "server/craftcms-server-check"
-  ],
   "autoload": {
     "classmap": [
       "server/requirements"
