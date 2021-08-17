@@ -9,9 +9,7 @@ require_once(__DIR__.'/requirements/RequirementsChecker.php');
 
 $checker = new RequirementsChecker();
 $checker->checkCraft()->render();
-
-$args = isset($_SERVER['argv']) ? $_SERVER['argv'] : [];
-$strict = in_array('--strict', $args);
+$strict = (bool) getenv('CRAFT_STRICT_SERVER_CHECK');
 
 if ($checker->result['summary']['errors'] || ($strict && $checker->result['summary']['warnings'])) {
     exit(1);
