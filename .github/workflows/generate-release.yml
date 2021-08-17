@@ -27,6 +27,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files:
-            - sha256sum.txt
-            - 'release.tar.gz'
+          files: |
+            sha256sum.txt
+            'release.tar.gz'
