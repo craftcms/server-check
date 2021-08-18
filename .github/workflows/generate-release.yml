@@ -1,0 +1,32 @@
+name: Generate Release
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  generate_release:
+    name: Generate release
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Archive release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: tar
+          directory: ./server
+          filename: ../craftcms-server-check.tar.gz
+          exclusions: '*.git*'
+
+      - name: Generate SHA256
+        run: sha256sum -b craftcms-server-check.tar.gz > sha256sum.txt
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            sha256sum.txt
+            craftcms-server-check.tar.gz
