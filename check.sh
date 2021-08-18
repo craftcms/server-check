@@ -25,24 +25,23 @@ checkCmd() {
 function serverCheck() {
   checkTools
 
-  latestTag=$(curl -s https://api.github.com/repos/craftcms/server-check/releases | grep 'tag_name' | cut -d\" -f4)
-  tmpDir="/tmp/craftcms-server-check-${latestTag}"
-	assetUrl="https://github.com/craftcms/server-check/releases/download/${latestTag}/craftcms-server-check.tar.gz"
+  tmpDir="/tmp/craftcms-server-check"
+  assetUrl="https://github.com/craftcms/server-check/releases/latest/download/craftcms-server-check.tar.gz"
   downloadToFile="${tmpDir}/craftcms-server-check.tar.gz"
   phpScript="${tmpDir}/checkit.php"
 
-  echo "Downloading file…"
-  mkdir "$tmpDir"
-  curl -fsSL "$assetUrl" --output "$downloadToFile"
+  echo "Downloading file… ${assetUrl}"
+  mkdir "${tmpDir}"
+  curl -fsSL "${assetUrl}" --output "${downloadToFile}"
 
   echo "Extracting…"
-  tar -xzf "$downloadToFile" -C "$tmpDir"
+  tar -xzf "${downloadToFile}" -C "${tmpDir}"
 
   echo "Running Craft Server Check…"
   php $phpScript
   returnCode=$?
 
-  rm -rf "$tmpDir"
+  rm -rf "${tmpDir}"
 
   return $returnCode
 }
