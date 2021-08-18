@@ -25,3 +25,13 @@ The script will return an exit code of `1` if:
   ```bash
   CRAFT_STRICT_SERVER_CHECK=1 php server/checkit.php
   ```
+
+This can be espically useful in a CI/CD pipeline, or a `Dockerfile`, where you want the process to fail if the check does not pass:
+
+```Dockerfile
+# Dockerfile
+FROM php:8.0-fpm
+RUN curl -Lsf https://raw.githubusercontent.com/craftcms/server-check/HEAD/check.sh | bash
+```
+
+The official [Craft Docker Images](https://github.com/craftcms/docker) run this check when building to be certain all of Craft's requirements are met in any built image.
