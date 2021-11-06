@@ -24,23 +24,34 @@ switch ($this->dbDriver) {
             'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/ref.pdo-mysql.php">PDO MySQL</a> extension is required.'
         );
         if ($conn !== false) {
+            $version = $conn->getAttribute(PDO::ATTR_SERVER_VERSION);
+            if (strpos($version, 'MariaDB') !== false) {
+                $name = 'MariaDB';
+                $version = preg_replace('/^.*?MariaDB.*?:/', '', $version);
+                $requiredVersion = $this->requiredMariaDbVersion;
+                $tzUrl = 'https://mariadb.com/kb/en/time-zones/#mysql-time-zone-tables';
+            } else {
+                $name = 'MySQL';
+                $requiredVersion = $this->requiredMySqlVersion;
+                $tzUrl = 'https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html';
+            }
             $requirements[] = array(
-                'name' => "MySQL {$this->requiredMySqlVersion}+",
+                'name' => "{$name} {$requiredVersion}+",
                 'mandatory' => true,
-                'condition' => $this->checkDatabaseServerVersion($conn, $this->requiredMySqlVersion),
-                'memo' => "MySQL {$this->requiredMySqlVersion} or higher is required to run Craft CMS.",
+                'condition' => version_compare($version, $requiredVersion, '>='),
+                'memo' => "{$name} {$this->requiredMySqlVersion} or higher is required to run Craft CMS.",
             );
             $requirements[] = array(
-                'name' => 'MySQL InnoDB support',
+                'name' => "{$name} InnoDB support",
                 'mandatory' => true,
                 'condition' => $this->isInnoDbSupported($conn),
-                'memo' => 'Craft CMS requires the MySQL InnoDB storage engine to run.',
+                'memo' => "Craft CMS requires the {$name} InnoDB storage engine to run.",
             );
             $requirements[] = array(
-                'name' => 'MySQL timezone support',
+                'name' => "{$name} timezone support",
                 'mandatory' => false,
                 'condition' => $this->validateDatabaseTimezoneSupport($conn),
-                'memo' => 'MySQL should be configured with <a rel="noopener" target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html">full timezone support</a>.',
+                'memo' => "{$name} should be configured with <a rel='noopener' target='_blank' href='{$tzUrl}'>full timezone support</a>.",
             );
         }
         break;

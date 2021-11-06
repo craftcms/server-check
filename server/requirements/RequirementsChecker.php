@@ -51,6 +51,7 @@ class RequirementsChecker
     var $result;
 
     var $requiredMySqlVersion = '5.7.8';
+    var $requiredMariaDbVersion = '10.2.7';
     var $requiredPgSqlVersion = '9.5';
 
     /**
