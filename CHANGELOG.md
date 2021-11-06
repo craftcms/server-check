@@ -1,5 +1,15 @@
 # Changelog for Craft CMS Server Check
 
+## 1.2.1 - 2021-05-25
+
+### Added
+- Added a check for MySQL to see if the server has been configured with full timezone support.
+
+## 1.2.0 2020-11-04
+
+### Changed
+- Bumped the PHP requirement to 7.2.5 for Craft 3.6.0.
+
 ## 1.1.9 - 2020-05-28
 
 ### Added
