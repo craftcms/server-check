@@ -5,6 +5,7 @@
 ### Changed
 - Bumped the PHP requirement to 8.0 for Craft 4.0.
 - Bumped the PostgreSQL requirement to 10.0 for Craft 4.0.
+- The `intl` extension is now required for Craft 4.0.
 
 ## 2.0.1 - 2021-12-07
 

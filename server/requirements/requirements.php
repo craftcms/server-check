@@ -136,7 +136,7 @@ $requirements = array_merge($requirements, array(
     $this->iniSetRequirement(),
     array(
         'name' => 'Intl extension',
-        'mandatory' => false,
+        'mandatory' => true,
         'condition' => $this->checkPhpExtensionVersion('intl', '1.0.2', '>='),
         'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.intl.php">Intl</a> extension (version 1.0.2+) is recommended.'
     ),
