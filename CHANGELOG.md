@@ -1,5 +1,10 @@
 # Changelog for Craft CMS Server Check
 
+- 2.0.1 - 2021-12-07
+
+### Added
+- There is now an explicit check for MariaDB, and it requires version 10.2.7 or higher. 
+
 ## 1.2.1 - 2021-05-25
 
 ### Added
