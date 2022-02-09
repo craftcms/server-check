@@ -1,5 +1,11 @@
 # Changelog for Craft CMS Server Check
 
+## Unreleased
+
+### Changed
+- Bumped the PHP requirement to 8.0 for Craft 4.0.
+- Bumped the PostgreSQL requirement to 10.0 for Craft 4.0.
+
 ## 2.0.1 - 2021-12-07
 
 ### Added

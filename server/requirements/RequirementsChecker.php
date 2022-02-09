@@ -12,7 +12,7 @@ if (version_compare(PHP_VERSION, '4.3', '<')) {
 
 /**
  * The Craft Requirement Checker allows checking if the current system meets the minimum requirements for running a
- * Craft 3 application.
+ * Craft 4 application.
  *
  * This class allows rendering of the requirement report through a web browser or command line interface.
  *
@@ -52,7 +52,7 @@ class RequirementsChecker
 
     var $requiredMySqlVersion = '5.7.8';
     var $requiredMariaDbVersion = '10.2.7';
-    var $requiredPgSqlVersion = '9.5';
+    var $requiredPgSqlVersion = '10.0';
 
     /**
      * Check the given requirements, collecting results into internal field.
