@@ -1,5 +1,10 @@
 # Changelog for Craft CMS Server Check
 
+## 2.1.1 - 2022-02-10
+
+### Fixed
+- Fixed a bug where the MariaDB version wasn’t always being parsed correctly. ([craftcms/cms#10456](https://github.com/craftcms/cms/issues/10456))
+
 ## 2.1.0 - 2022-02-09
 
 ### Changed

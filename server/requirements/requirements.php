@@ -25,9 +25,9 @@ switch ($this->dbDriver) {
         );
         if ($conn !== false) {
             $version = $conn->getAttribute(PDO::ATTR_SERVER_VERSION);
-            if (strpos($version, 'MariaDB') !== false) {
+            if (preg_match('/[\d.]+-([\d.]+)-\bMariaDB\b/', $version, $match)) {
                 $name = 'MariaDB';
-                $version = preg_replace('/^.*?MariaDB.*?:/', '', $version);
+                $version = $match[1];
                 $requiredVersion = $this->requiredMariaDbVersion;
                 $tzUrl = 'https://mariadb.com/kb/en/time-zones/#mysql-time-zone-tables';
             } else {
@@ -39,7 +39,7 @@ switch ($this->dbDriver) {
                 'name' => "{$name} {$requiredVersion}+",
                 'mandatory' => true,
                 'condition' => version_compare($version, $requiredVersion, '>='),
-                'memo' => "{$name} {$this->requiredMySqlVersion} or higher is required to run Craft CMS.",
+                'memo' => "{$name} {$requiredVersion} or higher is required to run Craft CMS.",
             );
             $requirements[] = array(
                 'name' => "{$name} InnoDB support",
