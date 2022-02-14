@@ -1,5 +1,10 @@
 # Changelog for Craft CMS Server Check
 
+## 2.1.2 - 2022-02-14
+
+### Changed
+- Bumped the PHP requirement to 8.0.2+.
+
 ## 2.1.1 - 2022-02-10
 
 ### Fixed

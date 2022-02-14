@@ -6,10 +6,10 @@
 /** @var RequirementsChecker $this */
 $requirements = array(
     array(
-        'name' => 'PHP 8.0+',
+        'name' => 'PHP 8.0.2+',
         'mandatory' => true,
-        'condition' => PHP_VERSION_ID >= 80000,
-        'memo' => 'PHP 8.0 or later is required.',
+        'condition' => PHP_VERSION_ID >= 80002,
+        'memo' => 'PHP 8.0.2 or later is required.',
     ),
 );
 
