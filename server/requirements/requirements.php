@@ -98,6 +98,12 @@ $requirements = array_merge($requirements, array(
         'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.spl.php">SPL</a> extension is required.'
     ),
     array(
+        'name' => 'BCMath extension',
+        'mandatory' => true,
+        'condition' => extension_loaded('bcmath'),
+        'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.bc.php">BCMath</a> extension is required.'
+    ),
+    array(
         'name' => 'PDO extension',
         'mandatory' => true,
         'condition' => extension_loaded('pdo'),

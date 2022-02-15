@@ -1,5 +1,10 @@
 # Changelog for Craft CMS Server Check
 
+## 2.1.3 - 2022-02-15
+
+### Added
+- Added the BCMath extension as a requirement.
+
 ## 2.1.2 - 2022-02-14
 
 ### Changed
