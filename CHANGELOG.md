@@ -1,5 +1,10 @@
 # Changelog for Craft CMS Server Check
 
+## Unreleased
+
+### Added
+- Added checks for relying on the default `@web` alias for the site URL and asset base URLs.
+
 ## 1.2.1 - 2021-05-25
 
 ### Added

@@ -65,6 +65,8 @@ switch ($this->dbDriver) {
 // Only run this requirement check if we're running in the context of Craft.
 if (class_exists('Craft')) {
     $requirements[] = $this->webrootRequirement();
+    $requirements[] = $this->siteWebAliasRequirement();
+    $requirements[] = $this->volumeWebAliasRequirement();
 }
 
 $requirements = array_merge($requirements, array(
