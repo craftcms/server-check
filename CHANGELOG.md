@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Added
-- Added checks for relying on the default `@web` alias for the site URL and asset base URLs.
+- Added checks for relying on the default `@web` alias.
 
 ## 1.2.1 - 2021-05-25
 
