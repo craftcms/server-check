@@ -541,50 +541,19 @@ class RequirementsChecker
     /**
      * @return array
      */
-    function siteWebAliasRequirement()
+    function webAliasRequirement()
     {
-        $pass = true;
-        $memo = 'Your @web alias is set correctly for the site.';
-        if (Craft::$app->getRequest()->isWebAliasSetDynamically) {
-            $baseUrl = Craft::$app->getSites()->getCurrentSite()->getBaseUrl(false);
-            $pass = !\craft\helpers\StringHelper::contains($baseUrl, '@web');
-            if (!$pass) {
-                $memo = 'We recommend explicitly overriding the <a rel="noopener" target="_blank" href="https://craftcms.com/docs/3.x/config/#aliases">@web alias</a> for your site if you plan on using it.';
-            }
+        $aliases = Craft::$app->getConfig()->getGeneral()->aliases;
+        $memo = 'We recommend explicitly overriding the <a rel="noopener" target="_blank" href="https://craftcms.com/docs/3.x/config/#aliases">@web alias</a>.';
+        $pass = false;
+
+        if (isset($aliases['web']) || isset($aliases['@web'])) {
+            $memo = 'Your @web alias is set correctly';
+            $pass = true;
         }
 
         return array(
-            'name' => 'Ensure @web alias is explicitly overridden for site',
-            'mandatory' => false,
-            'condition' => $pass,
-            'memo' => $memo,
-        );
-    }
-
-    /**
-     * @return array
-     */
-    function volumeWebAliasRequirement()
-    {
-        $pass = true;
-        $memo = 'Your @web alias is set correctly for your volumes.';
-        if (Craft::$app->getRequest()->isWebAliasSetDynamically) {
-            $failedVolumes = [];
-
-            foreach (Craft::$app->getVolumes()->getAllVolumes() as $volume) {
-                if ($volume->hasUrls && \craft\helpers\StringHelper::contains($volume->url, '@web')) {
-                    $failedVolumes[] = $volume->name;
-                }
-            }
-
-            if (!empty($failedVolumes)) {
-                $pass = false;
-                $memo = 'We recommend explicitly overriding the <a rel="noopener" target="_blank" href="https://craftcms.com/docs/3.x/config/#aliases">@web alias</a> for the "' . (count($failedVolumes) === 1 ? $failedVolumes[0] . '" volume' : implode('", "', $failedVolumes) . '" volumes') . ' if you plan on using it.';
-            }
-        }
-
-        return array(
-            'name' => 'Ensure @web alias is explicitly overridden for volumes',
+            'name' => 'Ensure @web alias is explicitly overridden',
             'mandatory' => false,
             'condition' => $pass,
             'memo' => $memo,
