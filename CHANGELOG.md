@@ -1,6 +1,6 @@
 # Changelog for Craft CMS Server Check
 
-## Unreleased
+## 1.2.4 2022-04-16
 
 ### Added
 - Added checks for relying on the default `@web` alias.
