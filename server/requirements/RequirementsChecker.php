@@ -541,6 +541,28 @@ class RequirementsChecker
     /**
      * @return array
      */
+    function webAliasRequirement()
+    {
+        $aliases = Craft::$app->getConfig()->getGeneral()->aliases;
+        $memo = 'We recommend explicitly overriding the <a rel="noopener" target="_blank" href="https://craftcms.com/docs/3.x/config/#aliases">@web alias</a>.';
+        $pass = false;
+
+        if (isset($aliases['web']) || isset($aliases['@web'])) {
+            $memo = 'Your @web alias is set correctly';
+            $pass = true;
+        }
+
+        return array(
+            'name' => 'Ensure @web alias is explicitly overridden',
+            'mandatory' => false,
+            'condition' => $pass,
+            'memo' => $memo,
+        );
+    }
+
+    /**
+     * @return array
+     */
     function webrootRequirement()
     {
         $pathService = Craft::$app->getPath();
