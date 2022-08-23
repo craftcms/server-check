@@ -1,6 +1,6 @@
 # Craft Server Check
 
-This script checks if a web server meets the minimum requirements to run a Craft 3 installation.
+This script checks if a web server meets the minimum requirements to run a Craft 4 installation.
 
 ## Usage
 
