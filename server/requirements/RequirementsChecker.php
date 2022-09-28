@@ -544,7 +544,7 @@ class RequirementsChecker
     function webAliasRequirement()
     {
         $aliases = Craft::$app->getConfig()->getGeneral()->aliases;
-        $memo = 'We recommend explicitly overriding the <a rel="noopener" target="_blank" href="https://craftcms.com/docs/3.x/config/#aliases">@web alias</a>.';
+        $memo = 'We recommend explicitly overriding the <a rel="noopener" target="_blank" href="https://craftcms.com/docs/4.x/config/#aliases">@web alias</a>.';
         $pass = false;
 
         if (isset($aliases['web']) || isset($aliases['@web'])) {
