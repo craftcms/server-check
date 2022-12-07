@@ -1,17 +1,33 @@
 # Craft Server Check
 
-This script checks if a web server meets the minimum requirements to run a Craft 3 installation.
+This script checks if a web server meets the minimum requirements to run a Craft 4 installation.
 
 ## Usage
 
-Run the following in a terminal of any [\*nix](https://en.wikipedia.org/wiki/Unix-like) environment (e.g. Linux, MacOS, WSL).
+Run the following in a terminal of any [\*nix](https://en.wikipedia.org/wiki/Unix-like) environment (e.g. Linux, MacOS, WSL):
 
 ```bash
 curl -Lsf https://raw.githubusercontent.com/craftcms/server-check/HEAD/check.sh | bash
 ```
 
-Alternatively, you can upload the `server` folder to your web server's public html folder and load `checkit.php` from your browser
-or upload `server` anywhere on your server and execute `php checkit.php` from the console to see the results.
+> **Note**
+> You can [review the substance](https://github.com/craftcms/server-check/blob/main/check.sh) of this script before execution.
+
+### Alternatives
+
+#### Web UI
+
+Upload the `server/` folder to your web server’s web root and load `checkit.php` from a browser to get an HTML report.
+
+#### Remote CLI
+
+The same `server/` folder can be uploaded anywhere on your server and used via the command line to get a plain-text report:
+
+```bash
+php checkit.php
+```
+
+This is equivalent to the default [usage](#usage) instructions, above.
 
 ## Shell exit codes
 
@@ -26,7 +42,7 @@ The script will return an exit code of `1` if:
   CRAFT_STRICT_SERVER_CHECK=1 php server/checkit.php
   ```
 
-This can be espically useful in a CI/CD pipeline, or a `Dockerfile`, where you want the process to fail if the check does not pass:
+This can be especially useful in a CI/CD pipeline, or a `Dockerfile`, where you want the process to fail if the check does not pass:
 
 ```Dockerfile
 # Dockerfile
