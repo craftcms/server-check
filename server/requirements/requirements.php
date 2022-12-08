@@ -6,10 +6,10 @@
 /** @var RequirementsChecker $this */
 $requirements = array(
     array(
-        'name' => 'PHP 7.2.5+',
+        'name' => 'PHP 8.0.2+',
         'mandatory' => true,
-        'condition' => PHP_VERSION_ID >= 70205,
-        'memo' => 'PHP 7.2.5 or later is required.',
+        'condition' => PHP_VERSION_ID >= 80002,
+        'memo' => 'PHP 8.0.2 or later is required.',
     ),
 );
 
@@ -24,23 +24,34 @@ switch ($this->dbDriver) {
             'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/ref.pdo-mysql.php">PDO MySQL</a> extension is required.'
         );
         if ($conn !== false) {
+            $version = $conn->getAttribute(PDO::ATTR_SERVER_VERSION);
+            if (preg_match('/[\d.]+-([\d.]+)-\bMariaDB\b/', $version, $match)) {
+                $name = 'MariaDB';
+                $version = $match[1];
+                $requiredVersion = $this->requiredMariaDbVersion;
+                $tzUrl = 'https://mariadb.com/kb/en/time-zones/#mysql-time-zone-tables';
+            } else {
+                $name = 'MySQL';
+                $requiredVersion = $this->requiredMySqlVersion;
+                $tzUrl = 'https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html';
+            }
             $requirements[] = array(
-                'name' => "MySQL {$this->requiredMySqlVersion}+",
+                'name' => "{$name} {$requiredVersion}+",
                 'mandatory' => true,
-                'condition' => $this->checkDatabaseServerVersion($conn, $this->requiredMySqlVersion),
-                'memo' => "MySQL {$this->requiredMySqlVersion} or higher is required to run Craft CMS.",
+                'condition' => version_compare($version, $requiredVersion, '>='),
+                'memo' => "{$name} {$requiredVersion} or higher is required to run Craft CMS.",
             );
             $requirements[] = array(
-                'name' => 'MySQL InnoDB support',
+                'name' => "{$name} InnoDB support",
                 'mandatory' => true,
                 'condition' => $this->isInnoDbSupported($conn),
-                'memo' => 'Craft CMS requires the MySQL InnoDB storage engine to run.',
+                'memo' => "Craft CMS requires the {$name} InnoDB storage engine to run.",
             );
             $requirements[] = array(
-                'name' => 'MySQL timezone support',
+                'name' => "{$name} timezone support",
                 'mandatory' => false,
                 'condition' => $this->validateDatabaseTimezoneSupport($conn),
-                'memo' => 'MySQL should be configured with <a rel="noopener" target="_blank" href="https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html">full timezone support</a>.',
+                'memo' => "{$name} should be configured with <a rel='noopener' target='_blank' href='{$tzUrl}'>full timezone support</a>.",
             );
         }
         break;
@@ -88,6 +99,12 @@ $requirements = array_merge($requirements, array(
         'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.spl.php">SPL</a> extension is required.'
     ),
     array(
+        'name' => 'BCMath extension',
+        'mandatory' => true,
+        'condition' => extension_loaded('bcmath'),
+        'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.bc.php">BCMath</a> extension is required.'
+    ),
+    array(
         'name' => 'PDO extension',
         'mandatory' => true,
         'condition' => extension_loaded('pdo'),
@@ -101,9 +118,9 @@ $requirements = array_merge($requirements, array(
     ),
     array(
         'name' => 'GD extension or ImageMagick extension',
-        'mandatory' => true,
+        'mandatory' => false,
         'condition' => extension_loaded('gd') || (extension_loaded('imagick') && !empty(\Imagick::queryFormats())),
-        'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.image.php">GD</a> or <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.imagick.php">ImageMagick</a> extension is required, however ImageMagick is recommended as it adds animated GIF support, and preserves 8-bit and 24-bit PNGs during image transforms.'
+        'memo' => 'When using Craft\'s default image transformer, the <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.image.php">GD</a> or <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.imagick.php">ImageMagick</a> extension is required. ImageMagick is recommended as it adds animated GIF support, and preserves 8-bit and 24-bit PNGs during image transforms.'
     ),
     array(
         'name' => 'OpenSSL extension',
@@ -126,7 +143,7 @@ $requirements = array_merge($requirements, array(
     $this->iniSetRequirement(),
     array(
         'name' => 'Intl extension',
-        'mandatory' => false,
+        'mandatory' => true,
         'condition' => $this->checkPhpExtensionVersion('intl', '1.0.2', '>='),
         'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.intl.php">Intl</a> extension (version 1.0.2+) is recommended.'
     ),

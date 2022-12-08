@@ -1,9 +1,36 @@
 # Changelog for Craft CMS Server Check
 
-## 1.2.4 2022-04-16
+## 2.1.4 - 2022-04-16
 
 ### Added
 - Added checks for relying on the default `@web` alias.
+
+## 2.1.3 - 2022-02-15
+
+### Added
+- Added the BCMath extension as a requirement.
+
+## 2.1.2 - 2022-02-14
+
+### Changed
+- Bumped the PHP requirement to 8.0.2+.
+
+## 2.1.1 - 2022-02-10
+
+### Fixed
+- Fixed a bug where the MariaDB version wasn’t always being parsed correctly. ([craftcms/cms#10456](https://github.com/craftcms/cms/issues/10456))
+
+## 2.1.0 - 2022-02-09
+
+### Changed
+- Bumped the PHP requirement to 8.0 for Craft 4.0.
+- Bumped the PostgreSQL requirement to 10.0 for Craft 4.0.
+- The `intl` extension is now required for Craft 4.0.
+
+## 2.0.1 - 2021-12-07
+
+### Added
+- There is now an explicit check for MariaDB, and it requires version 10.2.7 or higher. 
 
 ## 1.2.1 - 2021-05-25
 
