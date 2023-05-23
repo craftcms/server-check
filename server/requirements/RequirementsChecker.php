@@ -386,7 +386,7 @@ class RequirementsChecker
 
         if ($conn === null) {
             try {
-                $conn = new PDO($this->dsn, $this->dbUser, $this->dbPassword);
+                $conn = new PDO($this->dsn ?? '', $this->dbUser, $this->dbPassword);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 $conn = false;
