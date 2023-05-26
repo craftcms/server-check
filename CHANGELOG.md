@@ -1,5 +1,10 @@
 # Changelog for Craft CMS Server Check
 
+## 2.1.5 - 2023-05-26
+
+### Fixed
+- Fixed an error that could occur when running the requirements checker using PHP 8+.
+
 ## 2.1.4 - 2022-04-16
 
 ### Added
