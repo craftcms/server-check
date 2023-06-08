@@ -2,6 +2,7 @@
 
 ## 5.0.0 (Unreleased)
 - The minimum PHP version is now 8.1.
+- The minimum PostgreSQL version is now 11.0.
 
 ## 2.1.5 - 2023-05-26
 
