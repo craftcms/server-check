@@ -1,5 +1,8 @@
 # Changelog for Craft CMS Server Check
 
+## 5.0.0 (Unreleased)
+- The minimum PHP version is now 8.1.
+
 ## 2.1.5 - 2023-05-26
 
 ### Fixed
