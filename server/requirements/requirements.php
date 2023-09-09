@@ -142,6 +142,14 @@ $requirements = array_merge($requirements, array_filter(array(
         'memo' => 'Craft CMS requires the <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.mbstring.php">Multibyte String</a> extension with <a rel="noopener" target="_blank" href="https://php.net/manual/en/mbstring.overload.php">Function Overloading</a> disabled in order to run.'
     ),
     array(
+        'name' => extension_loaded('opcache') ? 'OPcache extension (with save_comments)' : 'OPcache extension',
+        'mandatory' => extension_loaded('opcache'),
+        'condition' => extension_loaded('opcache') && ini_get('opcache.save_comments') == 1,
+        'memo' => extension_loaded('opcache')
+            ? 'The <a rel="noopener" target="_blank" href="https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments">opcache.save_comments</a> configuration setting must be enabled.'
+            : 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.opcache.php">OPcache</a> extension is recommended in production environments.'
+    ),
+    array(
         'name' => 'OpenSSL extension',
         'mandatory' => true,
         'condition' => extension_loaded('openssl'),
