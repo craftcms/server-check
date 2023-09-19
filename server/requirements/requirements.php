@@ -234,7 +234,6 @@ $requirements = array_merge($requirements, array_filter(array(
 
     $this->iniSetRequirement(),
     $this->memoryLimitRequirement(),
-    $this->maxExecutionTimeRequirement(),
 )));
 
 return $requirements;
