@@ -1,5 +1,8 @@
 # Changelog for Craft CMS Server Check
 
+## Unreleased
+- Fixed a bug where Opcache extension might not be correct detected on some systems.
+
 ## 2.1.6 - 2023-09-09
 - Added a requirement for [`opcache.save_comments`](https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments) to be enabled if OPcache is installed. ([craftcms/cms#13631](https://github.com/craftcms/cms/discussions/13631))  
 
