@@ -1,5 +1,8 @@
 # Changelog for Craft CMS Server Check
 
+## Unreleased
+- Reverted “The `@web` alias check now checks `Craft::$aliases;` instead of `Craft::$app->getConfig()->getGeneral()->aliases;`”.
+
 ## 2.1.7 - 2023-09-19
 - Fixed a bug where Opcache extension might not be correct detected on some systems. ([#25](https://github.com/craftcms/server-check/pull/25))
 - Removed the check for php.ini’s `max_execution_time` setting. ([#26](https://github.com/craftcms/server-check/pull/26))
