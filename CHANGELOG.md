@@ -1,6 +1,6 @@
 # Changelog for Craft CMS Server Check
 
-## Unreleased
+## 2.1.8 - 2023-09-25
 - Reverted “The `@web` alias check now checks `Craft::$aliases;` instead of `Craft::$app->getConfig()->getGeneral()->aliases;`”.
 
 ## 2.1.7 - 2023-09-19
