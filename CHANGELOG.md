@@ -1,6 +1,6 @@
 # Changelog for Craft CMS Server Check
 
-## 5.0.0 (Unreleased)
+## 5.0.0 2023-09-30
 - The minimum PHP version is now 8.2.
 - The minimum PostgreSQL version is now 11.0.
 
