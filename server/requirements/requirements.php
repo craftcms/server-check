@@ -35,7 +35,7 @@ switch ($this->dbDriver) {
             } else {
                 $name = 'MySQL';
                 $requiredVersion = $this->requiredMySqlVersion;
-                $tzUrl = 'https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html';
+                $tzUrl = 'https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html';
             }
             $requirements[] = array(
                 'name' => "{$name} {$requiredVersion}+",

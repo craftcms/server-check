@@ -50,9 +50,9 @@ class RequirementsChecker
 
     var $result;
 
-    var $requiredMySqlVersion = '5.7.8';
-    var $requiredMariaDbVersion = '10.2.7';
-    var $requiredPgSqlVersion = '11.0';
+    var $requiredMySqlVersion = '8.0.17';
+    var $requiredMariaDbVersion = '10.4.6';
+    var $requiredPgSqlVersion = '13.0';
 
     /**
      * Check the given requirements, collecting results into internal field.
@@ -431,7 +431,7 @@ class RequirementsChecker
      * This method attempts to see if MySQL timezone data has been populated on
      * the MySQL server Craft is configured to use.
      *
-     * https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html
+     * https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html
      *
      * @param PDO $conn
      * @return bool
