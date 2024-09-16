@@ -1,6 +1,6 @@
 # Changelog for Craft CMS Server Check
 
-## Unreleased
+## 5.0.2 - 2024-09-16
 - Removed check for relying on the default `@web` alias. ([craftcms/cms#15739](https://github.com/craftcms/cms/issues/15739))
 
 ## 5.0.1 - 2024-01-23
