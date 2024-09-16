@@ -1,5 +1,8 @@
 # Changelog for Craft CMS Server Check
 
+## 2.1.9 - 2024-09-16
+- Removed check for relying on the default `@web` alias. ([craftcms/cms#15739](https://github.com/craftcms/cms/issues/15739))
+
 ## 2.1.8 - 2023-09-25
 - Reverted “The `@web` alias check now checks `Craft::$aliases;` instead of `Craft::$app->getConfig()->getGeneral()->aliases;`”.
 
