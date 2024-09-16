@@ -1,5 +1,8 @@
 # Changelog for Craft CMS Server Check
 
+## Unreleased
+- Removed check for relying on the default `@web` alias. ([craftcms/cms#15739](https://github.com/craftcms/cms/issues/15739))
+
 ## 5.0.0 2023-09-30
 - The minimum PHP version is now 8.2.
 - The minimum PostgreSQL version is now 11.0.
