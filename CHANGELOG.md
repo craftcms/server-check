@@ -3,9 +3,17 @@
 ## Unreleased
 - Removed check for relying on the default `@web` alias. ([craftcms/cms#15739](https://github.com/craftcms/cms/issues/15739))
 
-## 5.0.0 2023-09-30
+## 5.0.1 - 2024-01-23
+- The minimum MySQL version is now 8.0.17.
+- The minimum MariaDB version is now 10.4.6.
+- The minimum PostgreSQL version is now 13.0.
+
+## 5.0.0 - 2023-10-01
 - The minimum PHP version is now 8.2.
 - The minimum PostgreSQL version is now 11.0.
+
+## 2.1.9 - 2024-09-16
+- Removed check for relying on the default `@web` alias. ([craftcms/cms#15739](https://github.com/craftcms/cms/issues/15739))
 
 ## 2.1.8 - 2023-09-25
 - Reverted “The `@web` alias check now checks `Craft::$aliases;` instead of `Craft::$app->getConfig()->getGeneral()->aliases;`”.
@@ -17,7 +25,6 @@
 
 ## 2.1.6 - 2023-09-09
 - Added a requirement for [`opcache.save_comments`](https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments) to be enabled if OPcache is installed. ([craftcms/cms#13631](https://github.com/craftcms/cms/discussions/13631))  
->>>>>>> main
 
 ## 2.1.5 - 2023-05-26
 - Fixed an error that could occur when running the requirements checker using PHP 8+.
