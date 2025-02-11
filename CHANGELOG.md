@@ -1,5 +1,8 @@
 # Changelog for Craft CMS Server Check
 
+## Unreleased
+- Fixed a bug where the MySQL timezone support check could return a false negative on some servers.
+
 ## 2.1.9 - 2024-09-16
 - Removed check for relying on the default `@web` alias. ([craftcms/cms#15739](https://github.com/craftcms/cms/issues/15739))
 

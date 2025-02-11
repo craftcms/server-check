@@ -438,7 +438,7 @@ class RequirementsChecker
      */
     function validateDatabaseTimezoneSupport($conn)
     {
-        $query = $conn->query("SELECT CONVERT_TZ('2007-03-11 2:00:00','US/Eastern','US/Central') AS time1");
+        $query = $conn->query("SELECT CONVERT_TZ('2007-03-11 02:00:00','America/Los_Angeles','America/New_York') AS time1");
         $result = $query->fetchColumn();
 
         if (!$result) {
