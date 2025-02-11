@@ -1,6 +1,6 @@
 # Changelog for Craft CMS Server Check
 
-## Unreleased
+## 5.0.3 - 2025-02-11
 - Fixed a bug where the MySQL timezone support check could return a false negative on some servers.
 
 ## 5.0.2 - 2024-09-16
