@@ -1,5 +1,8 @@
 # Changelog for Craft CMS Server Check
 
+## Unreleased
+- Fixed a bug where the MySQL timezone support check could return a false negative on some servers.
+
 ## 5.0.2 - 2024-09-16
 - Removed check for relying on the default `@web` alias. ([craftcms/cms#15739](https://github.com/craftcms/cms/issues/15739))
 
@@ -11,6 +14,9 @@
 ## 5.0.0 - 2023-10-01
 - The minimum PHP version is now 8.2.
 - The minimum PostgreSQL version is now 11.0.
+
+## 2.1.10 - 2025-02-11
+- Fixed a bug where the MySQL timezone support check could return a false negative on some servers.
 
 ## 2.1.9 - 2024-09-16
 - Removed check for relying on the default `@web` alias. ([craftcms/cms#15739](https://github.com/craftcms/cms/issues/15739))
