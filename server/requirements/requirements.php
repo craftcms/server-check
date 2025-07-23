@@ -27,7 +27,8 @@ switch ($this->dbDriver) {
         );
         if ($conn !== false) {
             $version = $conn->getAttribute(PDO::ATTR_SERVER_VERSION);
-            if (preg_match('/[\d.]+-([\d.]+)-\bMariaDB\b/', $version, $match)) {
+            // https://github.com/craftcms/cms/issues/17639#issuecomment-3097592753
+            if (preg_match('/([\d.]+)-MariaDB\b/', $version, $match)) {
                 $name = 'MariaDB';
                 $version = $match[1];
                 $requiredVersion = $this->requiredMariaDbVersion;
