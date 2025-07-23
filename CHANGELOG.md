@@ -1,6 +1,6 @@
 # Changelog for Craft CMS Server Check
 
-## Unreleased
+## 5.0.4 - 2025-07-23
 - Fixed a bug where MariaDB versions weren’t always getting parsed correctly. ([craftcms/cms#17639](https://github.com/craftcms/cms/issues/17639))
 
 ## 5.0.3 - 2025-02-11
