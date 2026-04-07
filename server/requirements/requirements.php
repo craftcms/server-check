@@ -110,7 +110,7 @@ $requirements = array_merge($requirements, array_filter(array(
         'name' => 'Fileinfo extension',
         'mandatory' => true,
         'condition' => extension_loaded('fileinfo'),
-        'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.fileinfo.php">Fileinfo</a> extension required.'
+        'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.fileinfo.php">Fileinfo</a> extension is required.'
     ),
     array(
         'name' => 'GD extension or ImageMagick extension',
