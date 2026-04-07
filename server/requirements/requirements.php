@@ -113,16 +113,22 @@ $requirements = array_merge($requirements, array_filter(array(
         'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.fileinfo.php">Fileinfo</a> extension is required.'
     ),
     array(
-        'name' => 'GD extension or ImageMagick extension',
-        'mandatory' => false,
-        'condition' => extension_loaded('gd') || (extension_loaded('imagick') && !empty(\Imagick::queryFormats())),
-        'memo' => 'When using Craft\'s default image transformer, the <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.image.php">GD</a> or <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.imagick.php">ImageMagick</a> extension is required. ImageMagick is recommended as it adds animated GIF support, and preserves 8-bit and 24-bit PNGs during image transforms.'
+        'name' => 'GD extension',
+        'mandatory' => true,
+        'condition' => extension_loaded('gd'),
+        'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.image.php">GD</a> extension is required.',
     ),
     array(
         'name' => 'iconv extension',
         'mandatory' => true,
         'condition' => function_exists('iconv'),
         'memo' => '<a rel="noopener" target="_blank" href="https://php.net/manual/en/book.iconv.php">iconv</a> is required for more robust character set conversion support.',
+    ),
+    array(
+        'name' => 'Imagick extension',
+        'mandatory' => false,
+        'condition' => extension_loaded('imagick') && !empty(\Imagick::queryFormats()),
+        'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.imagick.php">Imagick</a> (ImageMagick) extension is recommended, for animated GIF and transparent PNG support.',
     ),
     array(
         'name' => 'Intl extension',

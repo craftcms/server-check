@@ -1,5 +1,8 @@
 # Changelog for Craft CMS Server Check
 
+## Unreleased
+- The GD extension is now required. ([#30](https://github.com/craftcms/server-check/issues/30))
+
 ## 5.0.4 - 2025-07-23
 - Fixed a bug where MariaDB versions weren’t always getting parsed correctly. ([craftcms/cms#17639](https://github.com/craftcms/cms/issues/17639))
 
