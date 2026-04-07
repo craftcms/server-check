@@ -119,10 +119,10 @@ $requirements = array_merge($requirements, array_filter(array(
         'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/book.image.php">GD</a> extension is required.',
     ),
     array(
-        'name' => 'iconv extension',
+        'name' => 'Iconv extension',
         'mandatory' => true,
         'condition' => function_exists('iconv'),
-        'memo' => '<a rel="noopener" target="_blank" href="https://php.net/manual/en/book.iconv.php">iconv</a> is required for more robust character set conversion support.',
+        'memo' => '<a rel="noopener" target="_blank" href="https://php.net/manual/en/book.iconv.php">Iconv</a> is required for more robust character set conversion support.',
     ),
     array(
         'name' => 'Imagick extension',
