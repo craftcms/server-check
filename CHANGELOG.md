@@ -1,6 +1,6 @@
 # Changelog for Craft CMS Server Check
 
-## Unreleased
+## 5.1.0 - 2026-04-07
 - The GD extension is now required. ([#30](https://github.com/craftcms/server-check/issues/30))
 
 ## 5.0.4 - 2025-07-23
