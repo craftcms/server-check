@@ -6,10 +6,10 @@
 /** @var RequirementsChecker $this */
 $requirements = array(
     array(
-        'name' => 'PHP 8.2+',
+        'name' => 'PHP 8.5+',
         'mandatory' => true,
-        'condition' => PHP_VERSION_ID >= 80200,
-        'memo' => 'PHP 8.2 or later is required.',
+        'condition' => PHP_VERSION_ID >= 80500,
+        'memo' => 'PHP 8.5 or later is required.',
     ),
 );
 
@@ -19,6 +19,7 @@ $opCacheLoaded = extension_loaded('opcache') || extension_loaded('Zend OPcache')
 
 switch ($this->dbDriver) {
     case 'mysql':
+    case 'mariadb':
         $pdoExtensionRequirement = array(
             'name' => 'PDO MySQL extension',
             'mandatory' => true,
@@ -27,12 +28,15 @@ switch ($this->dbDriver) {
         );
         if ($conn !== false) {
             $version = $conn->getAttribute(PDO::ATTR_SERVER_VERSION);
-            // https://github.com/craftcms/cms/issues/17639#issuecomment-3097592753
-            if (preg_match('/([\d.]+)-MariaDB\b/', $version, $match)) {
+            if ($this->dbDriver === 'mariadb') {
                 $name = 'MariaDB';
-                $version = $match[1];
                 $requiredVersion = $this->requiredMariaDbVersion;
                 $tzUrl = 'https://mariadb.com/kb/en/time-zones/#mysql-time-zone-tables';
+
+                // https://github.com/craftcms/cms/issues/17639#issuecomment-3097592753
+                if (preg_match('/([\d.]+)-MariaDB\b/', $version, $match)) {
+                    $version = $match[1];
+                }
             } else {
                 $name = 'MySQL';
                 $requiredVersion = $this->requiredMySqlVersion;
@@ -55,6 +59,22 @@ switch ($this->dbDriver) {
                 'mandatory' => false,
                 'condition' => $this->validateDatabaseTimezoneSupport($conn),
                 'memo' => "{$name} should be configured with <a rel='noopener' target='_blank' href='{$tzUrl}'>full timezone support</a>.",
+            );
+        }
+        break;
+    case 'sqlite':
+        $pdoExtensionRequirement = array(
+            'name' => 'PDO SQLite extension',
+            'mandatory' => true,
+            'condition' => extension_loaded('pdo_sqlite'),
+            'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/ref.pdo-sqlite.php">PDO SQLite</a> extension is required.'
+        );
+        if ($conn !== false) {
+            $requirements[] = array(
+                'name' => "SQLite {$this->requiredSqliteVersion}+",
+                'mandatory' => true,
+                'condition' => $this->checkDatabaseServerVersion($conn, $this->requiredSqliteVersion),
+                'memo' => "SQLite {$this->requiredSqliteVersion} or higher is required to run Craft CMS.",
             );
         }
         break;
