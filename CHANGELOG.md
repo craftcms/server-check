@@ -1,5 +1,9 @@
 # Changelog for Craft CMS Server Check
 
+## 6.0.0 - 2026-05-06
+- The minimum PHP version is now 8.5.
+- The database driver can now be `mariadb` or `sqlite`.
+
 ## 5.1.0 - 2026-04-07
 - The GD extension is now required. ([#30](https://github.com/craftcms/server-check/issues/30))
 
